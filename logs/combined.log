@@ -1,0 +1,191 @@
+{"level":"info","message":"Server listening on: http://0.0.0.0:5000","timestamp":"2025-07-11T08:56:23.213Z"}
+{"level":"info","message":"Server listening on: http://0.0.0.0:5000","timestamp":"2025-07-11T09:46:13.891Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-11T11:51:37.255Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-11T11:51:47.645Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-11T15:49:38.223Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-11T15:50:14.391Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-11T15:58:23.149Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-11T15:58:33.265Z"}
+{"level":"info","message":"Database connected successfully","timestamp":"2025-07-11T16:02:59.858Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-11T16:02:59.865Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-11T16:03:58.305Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-11T16:05:04.511Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-11T16:05:14.508Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-11T16:13:32.423Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-11T16:13:32.446Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-11T16:13:40.732Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-11T16:13:40.750Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-11T16:14:20.733Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-11T16:14:20.752Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-11T16:14:23.936Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-11T16:14:23.952Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-11T16:14:40.115Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-11T16:14:40.131Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T13:57:04.243Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-12T13:57:04.264Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:01:03.911Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-12T14:01:03.931Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:01:16.850Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-12T14:01:16.865Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:02:02.583Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-12T14:02:02.599Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:02:44.216Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-12T14:02:44.237Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:09:59.567Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-12T14:09:59.587Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:10:12.596Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-12T14:10:12.615Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:10:18.402Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-12T14:10:18.422Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:13:24.745Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:13:34.742Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:13:43.417Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:13:53.418Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:15:51.395Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:16:01.393Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:16:46.786Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:16:56.786Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:20:21.411Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:20:31.411Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:20:45.115Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:20:55.115Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:20:56.422Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:21:01.264Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:21:01.936Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:21:08.678Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:21:18.677Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:21:28.906Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:21:38.905Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:21:42.510Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:21:52.510Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:22:08.665Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:22:18.664Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:23:13.643Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:23:23.642Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:24:11.321Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:24:21.320Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:25:56.131Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:26:06.130Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:26:50.497Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-12T14:26:51.014Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-12T14:27:21.337Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-12T14:27:21.356Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:14:39.730Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:14:39.749Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:15:42.806Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:15:42.825Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:16:00.221Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:16:00.239Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:19:55.526Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:19:55.540Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:27:52.504Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:27:52.524Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:27:54.776Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:27:54.790Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:29:19.844Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:29:19.861Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:29:21.749Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:29:21.768Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:31:30.415Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:31:30.437Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:32:00.960Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:32:00.975Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:32:07.083Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:32:07.100Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:32:46.885Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:32:46.904Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:32:53.758Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:32:53.776Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:33:01.400Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:33:01.415Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:38:29.580Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:38:29.600Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:38:43.766Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:38:43.781Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:38:55.229Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:38:55.248Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:40:25.249Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:40:25.272Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:40:33.304Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:40:33.319Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:40:51.781Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:40:51.800Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:40:52.885Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:40:52.900Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:47:31.107Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:47:31.122Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:48:24.910Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:48:24.930Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:48:28.771Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:48:28.787Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:48:29.816Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:48:29.835Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:48:32.835Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:48:32.854Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:48:47.498Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:48:47.512Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T15:49:24.610Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T15:49:24.629Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:01:47.918Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:01:47.942Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:02:10.085Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:02:10.099Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:02:20.123Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:02:20.139Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:04:09.831Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:04:09.845Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:04:51.784Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:04:51.798Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:10:49.119Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:10:49.137Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:10:57.211Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:10:57.228Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:11:02.572Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:11:02.585Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:11:21.726Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:11:21.739Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:11:24.367Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:11:24.381Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:11:34.834Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:11:34.848Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:11:54.508Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:11:54.521Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:12:02.773Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:12:02.787Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:12:24.225Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:12:24.240Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:12:28.345Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:12:28.363Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:12:29.410Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:12:29.425Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:13:02.631Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:13:02.647Z"}
+{"level":"error","message":"Error: Invalid credentials\n    at Module.login (file:///app/services/auth.service.js:20:74)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async login (file:///app/controller/auth/auth.controller.js:14:53)","timestamp":"2025-07-13T20:13:08.625Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:13:28.236Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:13:28.249Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:13:30.780Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:13:30.794Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:13:32.996Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:13:33.010Z"}
+{"level":"error","message":"Error: Invalid credentials\n    at Module.login (file:///app/services/auth.service.js:20:74)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async login (file:///app/controller/auth/auth.controller.js:14:53)","timestamp":"2025-07-13T20:13:48.009Z"}
+{"level":"error","message":"Error: Invalid credentials\n    at Module.login (file:///app/services/auth.service.js:20:74)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async login (file:///app/controller/auth/auth.controller.js:14:53)","timestamp":"2025-07-13T20:14:07.660Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:14:25.815Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:14:25.828Z"}
+{"level":"error","message":"Error: Invalid credentials\n    at Module.login (file:///app/services/auth.service.js:20:74)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async login (file:///app/controller/auth/auth.controller.js:14:53)","timestamp":"2025-07-13T20:14:26.065Z"}
+{"level":"error","message":"Error: Invalid credentials\n    at Module.login (file:///app/services/auth.service.js:20:74)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async login (file:///app/controller/auth/auth.controller.js:14:53)","timestamp":"2025-07-13T20:14:26.687Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:14:41.441Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:14:41.454Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:16:23.625Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:16:23.641Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:16:29.947Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:16:29.961Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:16:44.611Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:16:44.624Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:18:30.677Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:18:30.693Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:22:38.290Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:22:38.303Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:22:40.460Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:22:40.473Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-13T20:23:09.161Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-13T20:23:09.175Z"}

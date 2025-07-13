@@ -1,0 +1,19 @@
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-11T16:05:14.508Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:13:34.742Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:13:53.418Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:16:01.393Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:16:56.786Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:20:31.411Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:20:55.115Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:21:18.677Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:21:38.905Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:21:52.510Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:22:18.664Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:23:23.642Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:24:21.320Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-12T14:26:06.130Z"}
+{"level":"error","message":"Error: Invalid credentials\n    at Module.login (file:///app/services/auth.service.js:20:74)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async login (file:///app/controller/auth/auth.controller.js:14:53)","timestamp":"2025-07-13T20:13:08.625Z"}
+{"level":"error","message":"Error: Invalid credentials\n    at Module.login (file:///app/services/auth.service.js:20:74)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async login (file:///app/controller/auth/auth.controller.js:14:53)","timestamp":"2025-07-13T20:13:48.009Z"}
+{"level":"error","message":"Error: Invalid credentials\n    at Module.login (file:///app/services/auth.service.js:20:74)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async login (file:///app/controller/auth/auth.controller.js:14:53)","timestamp":"2025-07-13T20:14:07.660Z"}
+{"level":"error","message":"Error: Invalid credentials\n    at Module.login (file:///app/services/auth.service.js:20:74)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async login (file:///app/controller/auth/auth.controller.js:14:53)","timestamp":"2025-07-13T20:14:26.065Z"}
+{"level":"error","message":"Error: Invalid credentials\n    at Module.login (file:///app/services/auth.service.js:20:74)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async login (file:///app/controller/auth/auth.controller.js:14:53)","timestamp":"2025-07-13T20:14:26.687Z"}
