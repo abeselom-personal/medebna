@@ -8,16 +8,31 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up SSH key
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/deploy_key
+          echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          echo -e "Host vps\n  HostName 147.79.100.108\n  User root\n  IdentityFile ~/.ssh/deploy_key\n  StrictHostKeyChecking no" >> ~/.ssh/config
+          printf "\n" >> ~/.ssh/deploy_key
+
+          cat >> ~/.ssh/config <<EOF
+Host vps
+  HostName 147.79.100.108
+  User abeselom
+  IdentityFile ~/.ssh/deploy_key
+  StrictHostKeyChecking no
+EOF
+          chmod 600 ~/.ssh/config
+
+      - name: Test SSH connection
+        run: ssh -o StrictHostKeyChecking=no abeselom@147.79.100.108 whoami
 
       - name: Push to server
         run: |
