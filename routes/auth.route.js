@@ -6,6 +6,7 @@ import {
     refreshResponseSchema
 } from '../dtos/auth.dto.js'
 import { validateBody, validateResponse } from '../middleware/validate.js'
+import verifyJWT from '../middleware/verifyJWT.js'
 
 const router = express.Router()
 
@@ -71,7 +72,7 @@ router.post('/login', validateBody(loginSchema), validateResponse(loginResponseS
  *             schema:
  *               $ref: '#/components/schemas/RefreshResponse'
  */
-router.post('/refresh', validateResponse(refreshResponseSchema), authController.refresh)
+router.post('/refresh', verifyJWT, validateResponse(refreshResponseSchema), authController.refresh)
 
 /**
  * @swagger
@@ -83,6 +84,6 @@ router.post('/refresh', validateResponse(refreshResponseSchema), authController.
  *       204:
  *         description: No Content
  */
-router.post('/logout', authController.logout)
+router.post('/logout', verifyJWT, authController.logout)
 
 export default router

@@ -27,6 +27,12 @@ export default {
     mongoose: {
         uri: process.env.MONGODB_URI,
     },
+    email: {
+        host: process.env.EMAIL_HOST,
+        port: parseInt(process.env.EMAIL_PORT || '465'),
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
     callbackUrl: process.env.CALLBACK_URL,
-    port: parseInt(process.env.PORT || '3000'),
+    port: parseInt(process.env.PORT || '5000'),
 }

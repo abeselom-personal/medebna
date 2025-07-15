@@ -1,7 +1,8 @@
 import * as System from "../../model/system/systemModel.js";
 import * as bcrypt from "bcrypt";
 import * as mongoose from "mongoose";
-import { sendEmail, generateOTP } from "../../services/userService.js";
+import { sendEmail } from "../../utils/email.js";
+import { generateOTP } from "../../utils/otp.js";
 
 export async function addOperator(req, res) {
     const { name, phone, email, type } = req.body;
@@ -22,7 +23,7 @@ export async function addOperator(req, res) {
         }
         const otp = generateOTP();
 
-        const hashedPassword = await bcrypt.hash(otp, 10);
+        const hashedPassword = bcrypt.hash(otp, 10);
 
         const newSystem = new System({
             name,

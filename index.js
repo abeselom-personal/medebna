@@ -6,6 +6,7 @@ import cors from 'cors'
 import fileUpload from 'express-fileupload'
 import swaggerUi from 'swagger-ui-express'
 import swaggerJsDoc from 'swagger-jsdoc'
+import cookieParser from 'cookie-parser'
 
 import swaggerConfig from './config/swagger.js'
 import initDatabase from './initDatabase.js'
@@ -23,7 +24,7 @@ app.use(cors({ methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], credentials: 
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-
+app.use(cookieParser())
 const swaggerSpec = swaggerJsDoc(swaggerConfig)
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 

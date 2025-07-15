@@ -12,11 +12,21 @@ const generateTokens = (id) => {
 export const register = async ({ email, password, firstName, lastName, phone }) => {
     const hashed = await bcrypt.hash(password, 10)
     const user = await User.create({ email, password: hashed, firstName, lastName, phone })
-    return { user: { id: user._id, email: user.email } }
+
+    const tokens = generateTokens(user._id)
+    user.refreshToken = tokens.refreshToken
+    await user.save()
+
+    return {
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        user: { id: user._id, email: user.email }
+    }
 }
 
 export const login = async ({ email, password }) => {
     const user = await User.findOne({ email }).select('+password +refreshToken')
+    console.log(user)
     if (!user || !(await bcrypt.compare(password, user.password))) throw new Error('Invalid credentials')
 
     const tokens = generateTokens(user._id)

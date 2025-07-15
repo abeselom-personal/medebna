@@ -10,6 +10,8 @@ const systemSchema = new mongoose.Schema({
         enum: ['car', 'hotel', 'event', 'admin'],
 
     },
+
+    refreshToken: { type: String, select: false },
     password: {
         type: String,
         required: true
