@@ -5,7 +5,7 @@ const swaggerDefinition = {
         version: '2.0.0',
         description: 'API documentation',
     },
-    servers: [{ url: 'http://localhost:5000' }],
+    servers: [{ url: 'http://localhost:5000' }, { url: 'https://api.medebna.com' }],
     components: {
         securitySchemes: {
             bearerAuth: {
