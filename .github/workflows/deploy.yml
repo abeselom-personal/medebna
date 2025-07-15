@@ -24,10 +24,10 @@ jobs:
 
           cat << EOF >> ~/.ssh/config
 Host vps
-  HostName 147.79.100.108
-  User abeselom
-  IdentityFile ~/.ssh/deploy_key
-  StrictHostKeyChecking no
+HostName 147.79.100.108
+User abeselom
+IdentityFile ~/.ssh/deploy_key
+StrictHostKeyChecking no
 EOF
 
           chmod 600 ~/.ssh/config
