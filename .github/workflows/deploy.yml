@@ -22,13 +22,14 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           printf "\n" >> ~/.ssh/deploy_key
 
-          cat >> ~/.ssh/config <<EOF
+          cat << 'EOF' >> ~/.ssh/config
 Host vps
   HostName 147.79.100.108
   User abeselom
   IdentityFile ~/.ssh/deploy_key
   StrictHostKeyChecking no
 EOF
+
           chmod 600 ~/.ssh/config
 
       - name: Test SSH connection
