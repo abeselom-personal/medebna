@@ -20,16 +20,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          printf "\n" >> ~/.ssh/deploy_key
-
-          cat << EOF >> ~/.ssh/config
-Host vps
-HostName 147.79.100.108
-User abeselom
-IdentityFile ~/.ssh/deploy_key
-StrictHostKeyChecking no
-EOF
-
+          echo -e "Host vps\n  HostName 147.79.100.108\n  User abeselom\n  IdentityFile ~/.ssh/deploy_key\n  StrictHostKeyChecking no" >> ~/.ssh/config
           chmod 600 ~/.ssh/config
 
       - name: Test SSH connection
