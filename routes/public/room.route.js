@@ -29,7 +29,7 @@ const router = Router()
  *               $ref: '#/components/schemas/PaginatedRoomResponse'
  */
 
-router.get('/rooms', getAllRooms)
+router.get('/', getAllRooms)
 
 /**
  * @swagger
@@ -52,6 +52,6 @@ router.get('/rooms', getAllRooms)
  *             schema:
  *               $ref: '#/components/schemas/Room'
  */
-router.get('/rooms/:id', validateIdParam, getRoomById)
+router.get('/:id', validateIdParam, getRoomById)
 
 export default router

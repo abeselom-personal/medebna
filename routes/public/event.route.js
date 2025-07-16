@@ -28,7 +28,7 @@ const router = Router()
  *             schema:
  *               $ref: '#/components/schemas/PaginatedEventResponse'
  */
-router.get('/events', getAllEvents)
+router.get('/', getAllEvents)
 
 /**
  * @swagger
@@ -52,6 +52,6 @@ router.get('/events', getAllEvents)
  *               $ref: '#/components/schemas/Event'
  */
 
-router.get('/events/:id', validateIdParam, getEventById)
+router.get('/:id', validateIdParam, getEventById)
 
 export default router
