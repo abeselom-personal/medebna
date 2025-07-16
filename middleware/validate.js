@@ -34,7 +34,18 @@ export const validateIdParam = (req, res, next) => {
 }
 
 export const validateSearchQuery = (req, res, next) => {
-    const { where, when } = req.query
-    if (!where || !when) return res.status(400).json({ message: '"where" and "when" are required' })
+    const { source = 'rooms', where, when, dateFrom, dateTo, priceMin, priceMax } = req.query
+
+    if (!where) return res.status(400).json({ message: '"where" is required' })
+
+    if (!when && !(dateFrom && dateTo))
+        return res.status(400).json({ message: 'Provide "when" or both "dateFrom" and "dateTo"' })
+
+    if ((priceMin && isNaN(Number(priceMin))) || (priceMax && isNaN(Number(priceMax))))
+        return res.status(400).json({ message: '"priceMin" and "priceMax" must be valid numbers' })
+
+    if (!['rooms', 'events'].includes(source))
+        return res.status(400).json({ message: '"source" must be either "rooms" or "events"' })
+
     next()
 }
