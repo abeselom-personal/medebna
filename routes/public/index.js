@@ -5,8 +5,8 @@ import searchRoutes from './search.route.js'
 
 const router = Router()
 
-router.use('/public', roomRoutes)
-router.use('/public', eventRoutes)
-router.use('/public', searchRoutes)
+router.use('/rooms', roomRoutes)
+router.use('/events', eventRoutes)
+router.use('/search', searchRoutes)
 
 export default router

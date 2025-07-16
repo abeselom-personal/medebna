@@ -31,7 +31,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 initDatabase()
 seedAdminUser()
 
-app.use(routes)
+app.use("/api", routes)
 app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000

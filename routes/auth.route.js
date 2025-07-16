@@ -76,6 +76,18 @@ router.post('/refresh', verifyJWT, validateResponse(refreshResponseSchema), auth
 
 /**
  * @swagger
+ * /api/auth/me:
+ *   get:
+ *     tags: [Auth]
+ *     summary: Get current user
+ *     responses:
+ *       200:
+ *         description: Current user info
+ */
+router.get('/me', verifyJWT, authController.me)
+
+/**
+ * @swagger
  * /api/auth/logout:
  *   post:
  *     tags: [Auth]

@@ -31,6 +31,14 @@ export const refresh = async (req, res, next) => {
     }
 }
 
+export const me = async (req, res, next) => {
+    try {
+        const user = await authService.me(req.user)
+        res.status(200).json(user)
+    } catch (err) {
+        next(err)
+    }
+}
 export const logout = async (req, res, next) => {
     try {
         const token = req.cookies?.refreshToken

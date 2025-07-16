@@ -5,7 +5,6 @@ async function seedAdmin() {
     const adminExists = await User.findOne({ email: 'admin@super.com' });
 
     if (adminExists) {
-        console.log("admin exists")
         return;
     }
 
