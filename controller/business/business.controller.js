@@ -1,11 +1,12 @@
 // controllers/business.controller.js
-import * as businessService from '../services/business.service.js'
-import { businessResponseDTO } from '../dto/business.dto.js'
+import * as businessService from '../../services/business.service.js'
+import { businessResponseDTO } from '../../dtos/business.dto.js'
 
 export const createBusiness = async (req, res, next) => {
     try {
         const ownerId = req.user.id
-        const business = await businessService.createBusiness(ownerId)
+        const { type } = req.body
+        const business = await businessService.createBusiness(ownerId, type)
         res.status(201).json(businessResponseDTO(business))
     } catch (error) {
         next(error)

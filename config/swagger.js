@@ -5,6 +5,10 @@ const swaggerDefinition = {
         version: '2.0.0',
         description: 'API documentation',
     },
+    tags: [
+        { name: 'Authentication', description: 'Auth routes' },
+        { name: 'Business', description: 'Business routes' }
+    ],
     servers: [{ url: 'http://localhost:5000' }, { url: 'https://api.medebna.com' }],
     components: {
         securitySchemes: {
@@ -142,21 +146,102 @@ const swaggerDefinition = {
                 }
             },
 
-            Event: {
+            BusinessResponse: {
                 type: 'object',
                 properties: {
                     id: { type: 'string' },
                     name: { type: 'string' },
-                    description: { type: 'string' },
-                    images: { type: 'array', items: { type: 'string' } },
-                    price: { type: 'number' },
-                    location: { type: 'string' },
-                    date: { type: 'string', format: 'date' },
-                    createdAt: { type: 'string' },
-                    updatedAt: { type: 'string' }
+                    address: {
+                        type: 'object',
+                        properties: {
+                            line: { type: 'string' },
+                            city: { type: 'string' },
+                            country: { type: 'string' },
+                            lat: { type: 'number' },
+                            lng: { type: 'number' }
+                        }
+                    },
+                    type: {
+                        type: 'string',
+                        enum: ['hotel', 'venue']
+                    },
+                    contact: {
+                        type: 'object',
+                        properties: {
+                            phone: { type: 'string' },
+                            emails: {
+                                type: 'array',
+                                items: { type: 'string' }
+                            }
+                        }
+                    },
+                    amenities: {
+                        type: 'array',
+                        items: { type: 'string' }
+                    },
+                    photos: {
+                        type: 'array',
+                        items: { type: 'string' }
+                    },
+                    legal: {
+                        type: 'object',
+                        properties: {
+                            licenseNumber: { type: 'string' },
+                            taxInfo: { type: 'string' },
+                            additionalDocs: {
+                                type: 'array',
+                                items: { type: 'string' }
+                            }
+                        }
+                    },
+                    paymentSettings: {
+                        type: 'object',
+                        properties: {
+                            currencies: {
+                                type: 'array',
+                                items: { type: 'string' }
+                            },
+                            details: { type: 'object' }
+                        }
+                    },
+                    stepsCompleted: {
+                        type: 'object',
+                        properties: {
+                            basic: { type: 'boolean' },
+                            contacts: { type: 'boolean' },
+                            amenities: { type: 'boolean' },
+                            photos: { type: 'boolean' },
+                            rooms: { type: 'boolean' },
+                            legal: { type: 'boolean' },
+                            paymentSettings: { type: 'boolean' }
+                        }
+                    },
+                    published: { type: 'boolean' },
+                    progress: { type: 'integer' },
+                    createdAt: { type: 'string', format: 'date-time' },
+                    updatedAt: { type: 'string', format: 'date-time' }
                 }
+            },
+            StepUpdateDto: {
+                type: 'object',
+                description: 'Dynamic step data — varies by step (basic, contacts, etc.)',
+                additionalProperties: true
             }
         },
+        Event: {
+            type: 'object',
+            properties: {
+                id: { type: 'string' },
+                name: { type: 'string' },
+                description: { type: 'string' },
+                images: { type: 'array', items: { type: 'string' } },
+                price: { type: 'number' },
+                location: { type: 'string' },
+                date: { type: 'string', format: 'date' },
+                createdAt: { type: 'string' },
+                updatedAt: { type: 'string' }
+            }
+        }
     },
 }
 

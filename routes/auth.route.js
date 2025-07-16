@@ -9,12 +9,18 @@ import { validateBody, validateResponse } from '../middleware/validate.js'
 import verifyJWT from '../middleware/verifyJWT.js'
 
 const router = express.Router()
+/**
+ * @swagger
+ * tags:
+ *   name: Authentication
+ *   description: Authentication registering and logout
+ */
 
 /**
  * @swagger
  * /api/auth/register:
  *   post:
- *     tags: [Auth]
+ *     tags: [Authentication]
  *     summary: Register a user
  *     requestBody:
  *       content:
@@ -35,7 +41,7 @@ router.post('/register', validateBody(registerSchema), validateResponse(register
  * @swagger
  * /api/auth/login:
  *   post:
- *     tags: [Auth]
+ *     tags: [Authentication]
  *     summary: Login a user
  *     requestBody:
  *       content:
@@ -62,7 +68,7 @@ router.post('/login', validateBody(loginSchema), validateResponse(loginResponseS
  * @swagger
  * /api/auth/refresh:
  *   post:
- *     tags: [Auth]
+ *     tags: [Authentication]
  *     summary: Refresh access token
  *     responses:
  *       200:
@@ -78,7 +84,7 @@ router.post('/refresh', verifyJWT, validateResponse(refreshResponseSchema), auth
  * @swagger
  * /api/auth/me:
  *   get:
- *     tags: [Auth]
+ *     tags: [Authentication]
  *     summary: Get current user
  *     responses:
  *       200:
@@ -90,7 +96,7 @@ router.get('/me', verifyJWT, authController.me)
  * @swagger
  * /api/auth/logout:
  *   post:
- *     tags: [Auth]
+ *     tags: [Authentication]
  *     summary: Logout user
  *     responses:
  *       204:

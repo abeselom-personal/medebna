@@ -1,9 +1,11 @@
 // services/business.service.js
-import Business from '../models/Business.js'
-import { calculateProgress } from '../utils/progress.js'
+import Business from '../model/business/business.model.js'
+import * as roomService from './room.service.js'
+import { calculateProgress } from '../utils/progress.util.js'
 
-export const createBusiness = async (ownerId) => {
-    const business = new Business({ ownerId })
+export const createBusiness = async (ownerId, type) => {
+    if (!type) throw new Error('Business type is required')
+    const business = new Business({ ownerId, type })
     await business.save()
     return business
 }
@@ -37,30 +39,42 @@ export const updateStep = async (businessId, step, data) => {
             business.name = data.name || business.name
             business.address = data.address || business.address
             business.type = data.type || business.type
+            business.stepsCompleted[step] = true
             break
         case 'contacts':
             business.contact = data.contact || business.contact
+            business.stepsCompleted[step] = true
             break
         case 'amenities':
             business.amenities = data.amenities || business.amenities
+            business.stepsCompleted[step] = true
             break
         case 'photos':
             business.photos = data.photos || business.photos
+            business.stepsCompleted[step] = true
             break
         case 'legal':
             business.legal = data || business.legal
+            business.stepsCompleted[step] = true
             break
+
         case 'paymentSettings':
             business.paymentSettings = data || business.paymentSettings
+            business.stepsCompleted[step] = true
             break
         case 'rooms':
-            // rooms handled separately likely
+            if (!data?.rooms?.length) break
+            const roomsWithBusiness = data.rooms.map(room => ({
+                ...room,
+                businessId: business._id
+            }))
+            await roomService.createMultipleRooms(roomsWithBusiness)
+            business.stepsCompleted[step] = true
             break
         default:
             throw new Error('Invalid step')
     }
 
-    business.stepsCompleted[step] = true
     await business.save()
     return business
 }
@@ -69,7 +83,8 @@ export const publishBusiness = async (businessId) => {
     const business = await Business.findById(businessId)
     if (!business) throw new Error('Business not found')
 
-    const allStepsDone = Object.values(business.stepsCompleted).every(v => v === true)
+    const { _id, ...steps } = business.stepsCompleted.toObject()
+    const allStepsDone = Object.values(steps).every(v => v === true)
     if (!allStepsDone) throw new Error('Complete all steps before publishing')
 
     business.published = true

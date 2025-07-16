@@ -13,7 +13,11 @@ const roomSchema = new mongoose.Schema({
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    businessId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Business',
+        required: true
     }
 }, { timestamps: true })
-
 export default mongoose.model('Room', roomSchema)

@@ -21,7 +21,7 @@ const BusinessSchema = new mongoose.Schema({
         lat: Number,
         lng: Number
     },
-    type: { type: String, enum: ['hotel', 'venue'], required: true },
+    type: { type: String, enum: ['hotel', 'venue'], default: 'hotel', required: true },
     contact: {
         phone: String,
         emails: [String]
@@ -47,5 +47,4 @@ BusinessSchema.methods.completeStep = function(step) {
         return this.save()
     }
 }
-
 export default mongoose.model('Business', BusinessSchema)
