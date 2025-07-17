@@ -6,7 +6,7 @@ export const businessResponseDTO = (business) => ({
     type: business.type,
     contact: business.contact,
     amenities: business.amenities,
-    photos: business.photos,
+    images: business.images,
     legal: business.legal,
     paymentSettings: business.paymentSettings,
     published: business.published,

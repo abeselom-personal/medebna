@@ -9,6 +9,7 @@ export const createRoom = async (data) => {
 
 export const createMultipleRooms = async (rooms, createdBy) => {
     const prepared = rooms.map(r => ({ ...r, createdBy }))
+    console.log(prepared)
     return Room.insertMany(prepared)
 }
 

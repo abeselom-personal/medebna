@@ -36,4 +36,8 @@ export default {
     callbackUrl: process.env.CALLBACK_URL,
     port: parseInt(process.env.PORT || '5000'),
     baseUrl: process.env.BASE_URL,
+    chapa: {
+        publicKey: process.env.CHAPA_PUBLIC_KEY,
+        secretKey: process.env.CHAPA_SECRET_KEY
+    }
 }

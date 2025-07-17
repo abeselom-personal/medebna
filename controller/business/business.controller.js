@@ -47,20 +47,23 @@ export const deleteBusiness = async (req, res, next) => {
 
 export const updateStep = async (req, res, next) => {
     try {
-        const processed = await Promise.all(
-            req.files.map(async file => {
-                const hash = await getBlurhash(file.path);
-                return {
-                    url: `${process.env.BASE_URL}/${file.path}`,
-                    blurhash: hash
-                };
-            })
-        );
+        let processed = [];
+        if (req.files && req.files.length > 0) {
+            processed = await Promise.all(
+                req.files.map(async file => {
+                    const hash = await getBlurhash(file.path);
+                    return {
+                        url: `${process.env.BASE_URL}/${file.path}`,
+                        blurhash: hash
+                    };
+                })
+            );
+        }
 
         const step = req.params.step;
         const businessId = req.params.id;
         const data = req.body;
-
+        console.log(data)
         if (step === 'rooms') {
             if (typeof data.rooms === 'string') data.rooms = JSON.parse(data.rooms);
             if (Array.isArray(data.rooms)) {
@@ -71,12 +74,15 @@ export const updateStep = async (req, res, next) => {
             }
         }
 
-        if (step === 'photos') {
-            data.photos = processed;
+        if (step === 'images') {
+            data.images = processed;
         }
 
-        const business = await businessService.updateStep(businessId, step, data);
-        res.json(businessResponseDTO(business));
+        const result = await businessService.updateStep(businessId, step, data)
+        res.json({
+            business: businessResponseDTO(result.business),
+            ...(result.rooms && { rooms: result.rooms })
+        })
     } catch (error) {
         next(error);
     }

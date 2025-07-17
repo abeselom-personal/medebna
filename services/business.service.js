@@ -32,7 +32,7 @@ export const deleteBusiness = async (id, ownerId) => {
 export const updateStep = async (businessId, step, data) => {
     const business = await Business.findById(businessId)
     if (!business) throw new Error('Business not found')
-
+    let rooms = []
     // Update data keys based on step
     switch (step) {
         case 'basic':
@@ -68,7 +68,7 @@ export const updateStep = async (businessId, step, data) => {
                 ...room,
                 businessId: business._id
             }))
-            await roomService.createMultipleRooms(roomsWithBusiness)
+            rooms = await roomService.createMultipleRooms(roomsWithBusiness)
             business.stepsCompleted[step] = true
             break
         default:
@@ -76,7 +76,7 @@ export const updateStep = async (businessId, step, data) => {
     }
 
     await business.save()
-    return business
+    return step === 'rooms' ? { business, rooms } : { business }
 }
 
 export const publishBusiness = async (businessId) => {
