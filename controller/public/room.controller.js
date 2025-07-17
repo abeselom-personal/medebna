@@ -17,6 +17,7 @@ export const getRoomById = async (req, res) => {
     }
 
     const room = await getRoomByIdService(id)
+    console.log(room)
     if (!room) return res.status(404).json({ message: 'Room not found' })
     res.status(200).json(RoomDTO(room))
 }

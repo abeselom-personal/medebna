@@ -5,7 +5,7 @@ const StepFlags = {
     basic: { type: Boolean, default: false },
     contacts: { type: Boolean, default: false },
     amenities: { type: Boolean, default: false },
-    photos: { type: Boolean, default: false },
+    images: { type: Boolean, default: false },
     rooms: { type: Boolean, default: false },
     legal: { type: Boolean, default: false },
     paymentSettings: { type: Boolean, default: false },
@@ -27,7 +27,10 @@ const BusinessSchema = new mongoose.Schema({
         emails: [String]
     },
     amenities: [String],
-    photos: [String],
+    images: [{
+        url: String,
+        blurhash: String
+    }],
     legal: {
         licenseNumber: String,
         taxInfo: String,

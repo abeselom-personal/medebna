@@ -49,8 +49,8 @@ export const updateStep = async (businessId, step, data) => {
             business.amenities = data.amenities || business.amenities
             business.stepsCompleted[step] = true
             break
-        case 'photos':
-            business.photos = data.photos || business.photos
+        case 'images':
+            business.images = data.images || business.images
             business.stepsCompleted[step] = true
             break
         case 'legal':

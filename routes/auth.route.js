@@ -9,6 +9,7 @@ import { validateBody, validateResponse } from '../middleware/validate.js'
 import verifyJWT from '../middleware/verifyJWT.js'
 
 const router = express.Router()
+
 /**
  * @swagger
  * tags:

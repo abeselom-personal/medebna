@@ -1,6 +1,9 @@
 // controllers/business.controller.js
 import * as businessService from '../../services/business.service.js'
 import { businessResponseDTO } from '../../dtos/business.dto.js'
+import { getBlurhash } from '../../utils/blurHash.js'
+
+import config from '../../config/config.js'
 
 export const createBusiness = async (req, res, next) => {
     try {
@@ -44,16 +47,40 @@ export const deleteBusiness = async (req, res, next) => {
 
 export const updateStep = async (req, res, next) => {
     try {
-        const step = req.params.step
-        const businessId = req.params.id
-        const data = req.body
-        const business = await businessService.updateStep(businessId, step, data)
-        res.json(businessResponseDTO(business))
-    } catch (error) {
-        next(error)
-    }
-}
+        const processed = await Promise.all(
+            req.files.map(async file => {
+                const hash = await getBlurhash(file.path);
+                return {
+                    url: `${process.env.BASE_URL}/${file.path}`,
+                    blurhash: hash
+                };
+            })
+        );
 
+        const step = req.params.step;
+        const businessId = req.params.id;
+        const data = req.body;
+
+        if (step === 'rooms') {
+            if (typeof data.rooms === 'string') data.rooms = JSON.parse(data.rooms);
+            if (Array.isArray(data.rooms)) {
+                data.rooms = data.rooms.map(room => ({
+                    ...room,
+                    images: processed
+                }));
+            }
+        }
+
+        if (step === 'photos') {
+            data.photos = processed;
+        }
+
+        const business = await businessService.updateStep(businessId, step, data);
+        res.json(businessResponseDTO(business));
+    } catch (error) {
+        next(error);
+    }
+};
 export const publishBusiness = async (req, res, next) => {
     try {
         const businessId = req.params.id

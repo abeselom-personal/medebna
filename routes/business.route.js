@@ -2,6 +2,7 @@
 import express from 'express'
 import * as businessController from '../controller/business/business.controller.js'
 import verifyJWT from '../middleware/verifyJWT.js'
+import upload from '../middleware/upload.js'
 const router = express.Router()
 
 /**
@@ -165,7 +166,7 @@ router.post('/:id/publish', businessController.publishBusiness)
  *             schema:
  *               $ref: '#/components/schemas/BusinessResponse'
  */
-router.post('/:id/:step', businessController.updateStep)
+router.post('/:id/:step', upload.array('images', 10), businessController.updateStep)
 
 /**
  * @swagger

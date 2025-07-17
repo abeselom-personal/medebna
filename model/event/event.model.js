@@ -3,7 +3,10 @@ import mongoose from 'mongoose'
 const eventSchema = new mongoose.Schema({
     name: String,
     description: String,
-    images: [String],
+    images: [{
+        url: String,
+        blurhash: String
+    }],
     location: String,
     date: Date,
     price: Number,
