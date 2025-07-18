@@ -194,4 +194,7 @@ router.post('/:id/:step', upload.array('images', 10), businessController.updateS
  */
 router.get('/:id/steps', businessController.getStepsStatus)
 
+
+router.get('/:id/rooms', businessController.getRooms)
+router.get('/:id/events', businessController.getEvents)
 export default router

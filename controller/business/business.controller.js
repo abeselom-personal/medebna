@@ -106,3 +106,23 @@ export const getStepsStatus = async (req, res, next) => {
         next(error)
     }
 }
+
+export const getEvents = async (req, res, next) => {
+    try {
+        const businessId = req.params.id
+        const events = await businessService.getEvents(businessId)
+        res.json(events)
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getRooms = async (req, res, next) => {
+    try {
+        const businessId = req.params.id
+        const rooms = await businessService.getRooms(businessId)
+        res.json(rooms)
+    } catch (error) {
+        next(error)
+    }
+}

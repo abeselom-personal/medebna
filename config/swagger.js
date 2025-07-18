@@ -227,6 +227,7 @@ const swaggerDefinition = {
                 description: 'Dynamic step data — varies by step (basic, contacts, etc.)',
                 additionalProperties: true
             }
+
         },
         Event: {
             type: 'object',

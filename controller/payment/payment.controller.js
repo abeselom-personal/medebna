@@ -4,7 +4,6 @@ export const init = async (req, res, next) => {
     try {
         const idempotencyKey = req.headers['idempotency-key']
         const result = await paymentService.initPayment(
-            req.user.id,
             req.body,
             idempotencyKey
         )
@@ -16,6 +15,7 @@ export const init = async (req, res, next) => {
 
 export const verify = async (req, res, next) => {
     try {
+        console.log("reached")
         const result = await paymentService.verifyPayment(req.params.tx_ref)
         res.status(200).json(result)
     } catch (err) {

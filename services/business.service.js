@@ -1,5 +1,7 @@
 // services/business.service.js
 import Business from '../model/business/business.model.js'
+import Events from '../model/event/event.model.js'
+import Rooms from '../model/room/room.model.js'
 import * as roomService from './room.service.js'
 import { calculateProgress } from '../utils/progress.util.js'
 
@@ -97,4 +99,18 @@ export const getStepsStatus = async (businessId) => {
     if (!business) throw new Error('Business not found')
 
     return business.stepsCompleted
+}
+
+export const getEvents = async (businessId) => {
+    const events = await Events.find({ businessId: businessId })
+    if (!events) throw new Error('Business not found')
+
+    return events
+}
+
+export const getRooms = async (businessId) => {
+    const rooms = await Rooms.find({ businessId: businessId })
+    if (!rooms) throw new Error('Business not found')
+
+    return rooms
 }

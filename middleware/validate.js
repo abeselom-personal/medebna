@@ -61,8 +61,6 @@ export const validateInit = [
     body('email').isEmail().withMessage('email must be valid'),
     body('first_name').notEmpty().withMessage('first_name is required'),
     body('last_name').notEmpty().withMessage('last_name is required'),
-    body('return_url').isURL().withMessage('return_url must be URL'),
-    body('callback_url').isURL().withMessage('callback_url must be URL'),
     body('metadata.paymentType').isString().withMessage('metadata.paymentType is required'),
     (req, res, next) => {
         const errs = validationResult(req)

@@ -4,13 +4,12 @@ import { validateInit } from '../middleware/validate.js'
 import verifyJWT from '../middleware/verifyJWT.js'
 
 const router = Router()
-router.use(verifyJWT)
 
 /**
  * @route POST /api/payment/init
  * @desc  Initialize payment (returns checkout URL)
  */
-router.post('/init', validateInit, paymentController.init)
+router.post('/init', verifyJWT, validateInit, paymentController.init)
 
 /**
  * @route GET /api/payment/verify/:tx_ref
