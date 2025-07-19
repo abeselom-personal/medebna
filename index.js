@@ -12,7 +12,7 @@ import { fileURLToPath } from 'url';
 import swaggerConfig from './config/swagger.js'
 import initDatabase from './initDatabase.js'
 import logger from './utils/logger.js'
-import seedAdminUser from './controller/seedAdmin.js'
+import seedAdminUser from './scripts/seedAdmin.js'
 import { seed } from './scripts/seed.js'
 import routes from './routes/index.js'
 import { errorHandler } from './middleware/error.js'

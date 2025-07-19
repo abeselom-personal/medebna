@@ -60,7 +60,7 @@ const generateRooms = (count = 200, businessId) =>
         }
     })
 
-const generateEvents = (count = 30) =>
+const generateEvents = (count = 30, businessId) =>
     Array.from({ length: count }).map((_, i) => ({
         name: `Event ${i + 1}`,
         description: `Cool event ${i + 1}`,
@@ -68,6 +68,7 @@ const generateEvents = (count = 30) =>
         price: Math.floor(Math.random() * 300) + 50,
         location: random(fakeLocations),
         date: new Date(Date.now() + 1000 * 60 * 60 * 24 * (i + 1)),
+        businessId: businessId,
         createdBy: new mongoose.Types.ObjectId()
     }))
 
@@ -101,7 +102,7 @@ export const seed = async () => {
         })
 
         const rooms = await Room.insertMany(generateRooms(50, fakeBusiness._id))
-        const events = await Event.insertMany(generateEvents())
+        const events = await Event.insertMany(generateEvents(50, fakeBusiness._id))
 
         console.log(`Seeded ${rooms.length} rooms and ${events.length} events`)
         return

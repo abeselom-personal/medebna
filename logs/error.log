@@ -17,3 +17,18 @@
 {"level":"error","message":"Error: Invalid credentials\n    at Module.login (file:///app/services/auth.service.js:20:74)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async login (file:///app/controller/auth/auth.controller.js:14:53)","timestamp":"2025-07-13T20:14:07.660Z"}
 {"level":"error","message":"Error: Invalid credentials\n    at Module.login (file:///app/services/auth.service.js:20:74)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async login (file:///app/controller/auth/auth.controller.js:14:53)","timestamp":"2025-07-13T20:14:26.065Z"}
 {"level":"error","message":"Error: Invalid credentials\n    at Module.login (file:///app/services/auth.service.js:20:74)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async login (file:///app/controller/auth/auth.controller.js:14:53)","timestamp":"2025-07-13T20:14:26.687Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-18T14:44:55.444Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-18T18:19:45.986Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-18T18:21:46.141Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-18T18:27:10.999Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-18T18:28:02.566Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-18T18:30:42.879Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-18T18:32:10.702Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-18T18:34:09.679Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-18T18:37:29.134Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-18T18:43:44.425Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-18T18:49:03.347Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-18T18:51:20.979Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-18T19:45:05.505Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-18T19:54:15.370Z"}
+{"level":"error","message":"MongoDB connection failed:","timestamp":"2025-07-18T19:59:16.824Z"}

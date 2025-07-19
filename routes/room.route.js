@@ -30,7 +30,7 @@ router.use(verifyJWT);
  *           schema:
  *             $ref: '#/components/schemas/RoomCreateDto'
  *     responses:
- *       201:
+ *       200:
  *         description: Room created
  *         content:
  *           application/json:
@@ -59,7 +59,7 @@ router.post('/', upload.array('images', 10), roomController.createRoom);
  *                 items:
  *                   $ref: '#/components/schemas/RoomCreateDto'
  *     responses:
- *       201:
+ *       200:
  *         description: Multiple rooms created
  *         content:
  *           application/json:

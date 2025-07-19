@@ -9,10 +9,17 @@ const eventSchema = new mongoose.Schema({
     }],
     location: String,
     date: Date,
+    startTime: Date,
+    endTime: Date,
     price: Number,
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    businessId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Business',
+        required: true
     }
 }, { timestamps: true })
 

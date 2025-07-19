@@ -1,4 +1,28 @@
 services:
+  mongo:
+    image: mongo:7.0  # Official image with proper permissions
+    hostname: mongo
+    ports:
+      - "30001:27017"  # Map host port to container's default port
+    command:
+      - --replSet=my-replica-set
+      - --bind_ip_all
+    volumes:
+      - mongo_data:/data/db
+      - mongo_config:/data/configdb
+    healthcheck:
+      test: |
+        mongosh --quiet --eval "
+          try {
+            rs.status().ok
+          } catch {
+            rs.initiate()
+          }"
+      interval: 5s
+      timeout: 10s
+      retries: 20
+      start_period: 30s  # Allow ample time for initialization
+
   api:
     build: .
     ports:
@@ -7,17 +31,13 @@ services:
       - .:/app
       - /app/node_modules
     environment:
-      - MONGO_URI=mongodb://mongo:27017/booking
+      - MONGODB_URI=mongodb://mongo:27017/booking?replicaSet=my-replica-set
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     command: npm run dev
-  mongo:
-    image: mongo:7
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
 
 volumes:
   mongo_data:
+  mongo_config:
   node_modules:
