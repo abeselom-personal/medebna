@@ -34,10 +34,11 @@ export const initPayment = async ({
         return_url: generatedReturnUrl,
         callback_url: generatedCallbackUrl,
         meta: metadata,
-        customization: {
-            title: metadata.paymentType || 'payment',
-            logo: null
-        }
+        customization:
+        {
+            title: biz.name || "Medebna Payment",
+            description: "I love online payments"
+        },
     }
 
     let resp
@@ -49,6 +50,7 @@ export const initPayment = async ({
             { headers: { Authorization: `Bearer ${config.chapa.secretKey}` } }
         )
     } catch (err) {
+        console.log(err.response.data)
         const message = err.response?.data?.message || err.message || JSON.stringify(err)
         throw new Error('Failed to initialize payment: ' + message)
     }

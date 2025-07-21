@@ -12,23 +12,67 @@ import bookingRouter from '../routes/booking.route.js'
 const router = express.Router()
 
 
+/**
+ * @swagger
+ * tags:
+ *   - name: Authentication
+ *     description: Authentication registering and logout
+ */
 router.use('/auth', authRouter)
+
+/**
+ * @swagger
+ * tags:
+ *   - name: Public
+ *     description: Public routes that do not require authentication
+ */
 router.use('/public', publicRouter)
+
+/**
+ * @swagger
+ * tags:
+ *   - name: Business
+ *     description: Manage business profiles and data
+ */
 router.use('/business', businessRouter)
+
+/**
+ * @swagger
+ * tags:
+ *   - name: Payment
+ *     description: Payment processing and transactions
+ */
 router.use('/payment', paymentRouter)
+
+/**
+ * @swagger
+ * tags:
+ *   - name: Room
+ *     description: Room listing and management
+ */
 router.use('/rooms', roomRouter)
+
+/**
+ * @swagger
+ * tags:
+ *   - name: Event
+ *     description: Event creation and management
+ */
 router.use('/events', eventRouter)
+
+/**
+ * @swagger
+ * tags:
+ *   - name: Favorite
+ *     description: Favorite and unfavorite functionality
+ */
 router.use('/favorites', favoriteRouter)
+
+/**
+ * @swagger
+ * tags:
+ *   - name: Booking
+ *     description: Booking creation, history, and cancellation
+ */
 router.use('/bookings', bookingRouter)
-
-//router.use('/api', paymentRouter)
-//router.use('/hotel', hotelRouter)
-//router.use('/car', carRouter)
-//router.use('/event', eventRouter)
-//router.use('/car-owner', carProfileRouter)
-//router.use('/event-owner', eventProfileRouter)
-//router.use('/hotel-owner', hotelProfileRouter)
-//router.use('/cart', cartRouter)
-//router.use('/account', accountRouter)
-
 export default router

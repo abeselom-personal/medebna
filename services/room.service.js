@@ -58,6 +58,20 @@ export const getRoomById = async (id) => {
     const result = await Room.aggregate([
         { $match: { _id: new mongoose.Types.ObjectId(id) } },
         ...addFavoritesAggregation()
+        , {
+            $lookup: {
+                from: 'businesses',
+                localField: 'businessId',
+                foreignField: '_id',
+                as: 'business'
+            }
+        },
+        {
+            $unwind: {
+                path: '$business',
+                preserveNullAndEmptyArrays: true
+            }
+        }
     ])
     if (!result.length) throw new Error('Room not found')
     return result[0]

@@ -34,5 +34,6 @@ export const roomResponseDto = (room) => ({
     createdAt: room.createdAt || null,
     updatedAt: room.updatedAt || null,
     favoritesCount: room.favoritesCount || 0,
+    business: room.business || null,
     isFavorite: !!room.isFavorite
 })

@@ -40,6 +40,7 @@ export const createMultipleRooms = async (req, res, next) => {
 export const getRoom = async (req, res, next) => {
     try {
         const room = await roomService.getRoomById(req.params.id);
+        console.log(room)
         res.json(roomResponseDto(room));
     } catch (err) {
         next(err);

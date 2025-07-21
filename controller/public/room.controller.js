@@ -1,4 +1,5 @@
-import { getAllRoomsService, getRoomByIdService } from '../../services/public/public.service.js'
+import { getAllRoomsService } from '../../services/public/public.service.js'
+import * as roomService from '../../services/room.service.js';
 import { RoomDTO, PaginatedDTO } from '../../dtos/public.dto.js'
 import { roomResponseDto, roomCreateDto, roomUpdateDto } from '../../dtos/room.dto.js'
 import mongoose from 'mongoose'
@@ -17,8 +18,7 @@ export const getRoomById = async (req, res) => {
         return res.status(400).json({ message: 'Invalid room ID format' })
     }
 
-    const room = await getRoomByIdService(id)
-    console.log(room)
+    const room = await roomService.getRoomById(req.params.id);
     if (!room) return res.status(404).json({ message: 'Room not found' })
     res.status(200).json(roomResponseDto(room))
 }

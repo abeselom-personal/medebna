@@ -10,12 +10,6 @@ import verifyJWT from '../middleware/verifyJWT.js'
 
 const router = express.Router()
 
-/**
- * @swagger
- * tags:
- *   name: Authentication
- *   description: Authentication registering and logout
- */
 
 /**
  * @swagger

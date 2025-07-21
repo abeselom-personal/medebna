@@ -3,6 +3,7 @@ import express from 'express'
 import * as businessController from '../controller/business/business.controller.js'
 import verifyJWT from '../middleware/verifyJWT.js'
 import upload from '../middleware/upload.js'
+import swaggerJSDoc from 'swagger-jsdoc'
 const router = express.Router()
 
 /**
@@ -174,7 +175,6 @@ router.post(
     ]),
     businessController.updateStep
 )
-
 /**
  * @swagger
  * /api/business/{id}/steps:
@@ -199,9 +199,59 @@ router.post(
  *               additionalProperties:
  *                 type: boolean
  */
-router.get('/:id/steps', businessController.getStepsStatus)
 
+router.get('/:id/steps', businessController.getStepsStatus)
+/**
+ * @swagger
+ * /api/business/{id}/rooms:
+ *   get:
+ *     summary: Get rooms for a business
+ *     tags: [Business]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of rooms
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Room'
+ */
 
 router.get('/:id/rooms', businessController.getRooms)
+/**
+ * @swagger
+ * /api/business/{id}/events:
+ *   get:
+ *     summary: Get events for a business
+ *     tags: [Business]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of events
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Event'
+ */
+
 router.get('/:id/events', businessController.getEvents)
+
 export default router

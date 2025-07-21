@@ -19,6 +19,8 @@ export const EventDTO = (event) => ({
     price: event.price,
     location: event.location,
     date: event.date,
+    businessId: event.businessId,
+    business: event.business,
     createdAt: event.createdAt,
     updatedAt: event.updatedAt,
 })

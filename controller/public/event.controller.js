@@ -1,4 +1,5 @@
-import { getAllEventsService, getEventByIdService } from '../../services/public/public.service.js'
+import { getAllEventsService } from '../../services/public/public.service.js'
+import * as eventService from '../../services/event.service.js';
 import { EventDTO, PaginatedDTO } from '../../dtos/public.dto.js'
 import mongoose from 'mongoose'
 
@@ -15,7 +16,8 @@ export const getEventById = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ message: 'Invalid room ID format' })
     }
-    const event = await getEventByIdService(id)
+    const event = await eventService.getEventById(req.params.id);
+
     if (!event) return res.status(404).json({ message: 'Event not found' })
     res.status(200).json(EventDTO(event))
 }

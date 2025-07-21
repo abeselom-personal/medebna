@@ -6,8 +6,14 @@ const swaggerDefinition = {
         description: 'API documentation',
     },
     tags: [
-        { name: 'Authentication', description: 'Auth routes' },
-        { name: 'Business', description: 'Business routes' }
+        { name: 'Authentication', description: 'Authentication registering and logout' },
+        { name: 'Public', description: 'Public routes that do not require authentication' },
+        { name: 'Business', description: 'Manage business profiles and data' },
+        { name: 'Room', description: 'Room listing and management' },
+        { name: 'Event', description: 'Event creation and management' },
+        { name: 'Favorite', description: 'Favorite and unfavorite functionality' },
+        { name: 'Payment', description: 'Payment processing and transactions' },
+        { name: 'Booking', description: 'Booking creation, history, and cancellation' }
     ],
     servers: [{ url: 'http://localhost:5000' }, { url: 'https://api.medebna.com' }],
     components: {
@@ -228,21 +234,21 @@ const swaggerDefinition = {
                 additionalProperties: true
             }
 
-        },
-        Event: {
-            type: 'object',
-            properties: {
-                id: { type: 'string' },
-                name: { type: 'string' },
-                description: { type: 'string' },
-                images: { type: 'array', items: { type: 'string' } },
-                price: { type: 'number' },
-                location: { type: 'string' },
-                date: { type: 'string', format: 'date' },
-                createdAt: { type: 'string' },
-                updatedAt: { type: 'string' }
+            , Event: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' },
+                    name: { type: 'string' },
+                    description: { type: 'string' },
+                    images: { type: 'array', items: { type: 'string' } },
+                    price: { type: 'number' },
+                    location: { type: 'string' },
+                    date: { type: 'string', format: 'date' },
+                    createdAt: { type: 'string' },
+                    updatedAt: { type: 'string' }
+                }
             }
-        }
+        },
     },
 }
 

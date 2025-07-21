@@ -19,8 +19,6 @@ export const getAllEventsService = async ({ page, limit }) => {
     ])
     return [items, total]
 }
-export const getRoomByIdService = (id) => Room.findById(id)
-export const getEventByIdService = (id) => Event.findById(id)
 
 export const searchService = async ({
     source = 'rooms',

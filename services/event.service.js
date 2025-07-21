@@ -77,6 +77,21 @@ export const getEventById = async (id) => {
                 favorites: 0
             }
         }
+
+        , {
+            $lookup: {
+                from: 'businesses',
+                localField: 'businessId',
+                foreignField: '_id',
+                as: 'business'
+            }
+        },
+        {
+            $unwind: {
+                path: '$business',
+                preserveNullAndEmptyArrays: true
+            }
+        }
     ])
     if (!result.length) throw new Error('Event not found')
     return result[0]

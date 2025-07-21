@@ -95,7 +95,6 @@ export const updateStep = async (req, res, next) => {
         }
 
         // Handle deletions after processing new files
-        let deletedUrls = [];
         if (toDelete.length > 0) {
             deletedUrls = await deleteImages(
                 toDelete,
