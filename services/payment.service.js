@@ -64,7 +64,7 @@ export const initPayment = async ({
         email,
         phone_number,
         paidFor: {
-            item: metadata.sourceId,
+            item: metadata.bookingId,
             kind: metadata.paymentType === 'room_booking' ? 'Room' : 'Event'
         },
         raw: null
