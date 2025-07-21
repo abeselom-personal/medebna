@@ -33,7 +33,7 @@ app.use(cookieParser())
 initDatabase()
 seedAdminUser()
 await seed()
-
+app.get('/', (_, res) => res.send('OK'))
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 app.use('/api', routes)
@@ -41,4 +41,4 @@ app.use('/api', routes)
 app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
-app.listen(PORT, () => logger.info(`Server running at http://0.0.0.0:${PORT}`))
+app.listen(PORT, '0.0.0.0', () => logger.info(`Server running at http://0.0.0.0:${PORT}`))

@@ -30,6 +30,11 @@ export const login = async ({ email, password }) => {
     }
 }
 
+export const me = async ({ id }) => {
+    const user = await userService.findUserById(id)
+    return user
+}
+
 export const refresh = async (token) => {
     const payload = verifyRefreshToken(token)
     const user = await userService.findUserById(payload.id)

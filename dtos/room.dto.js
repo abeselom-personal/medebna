@@ -13,15 +13,26 @@ export const roomUpdateDto = (body) => {
 };
 
 export const roomResponseDto = (room) => ({
-    id: room._id,
-    title: room.title,
-    description: room.description,
-    images: room.images,
-    price: room.price,
-    location: room.location,
-    availability: room.availability,
-    createdBy: room.createdBy,
-    businessId: room.businessId,
-    createdAt: room.createdAt,
-    updatedAt: room.updatedAt
-});
+    id: room._id?.toString(),
+    title: room.title || '',
+    description: room.description || '',
+    images: Array.isArray(room.images) ? room.images.map(img => ({
+        url: img.url || '',
+        blurhash: img.blurhash || ''
+    })) : [],
+    price: Array.isArray(room.price) ? room.price.map(p => ({
+        currency: p.currency || '',
+        amount: p.amount || 0
+    })) : [],
+    location: room.location || '',
+    availability: {
+        from: room.availability?.from || null,
+        to: room.availability?.to || null
+    },
+    createdBy: room.createdBy?.toString?.() || '',
+    businessId: room.businessId?.toString?.() || '',
+    createdAt: room.createdAt || null,
+    updatedAt: room.updatedAt || null,
+    favoritesCount: room.favoritesCount || 0,
+    isFavorite: !!room.isFavorite
+})

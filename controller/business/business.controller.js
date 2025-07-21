@@ -1,9 +1,7 @@
 // controllers/business.controller.js
 import * as businessService from '../../services/business.service.js'
 import { businessResponseDTO } from '../../dtos/business.dto.js'
-import { getBlurhash } from '../../utils/blurHash.js'
-
-import config from '../../config/config.js'
+import { processImages, deleteImages } from '../../services/imageUpload.service.js'
 
 export const createBusiness = async (req, res, next) => {
     try {
@@ -39,6 +37,13 @@ export const deleteBusiness = async (req, res, next) => {
     try {
         const ownerId = req.user.id
         const business = await businessService.deleteBusiness(req.params.id, ownerId)
+        if (business.images?.length) {
+            const urls = business.images.map(i => i.url)
+            await deleteImages(urls, process.env.BASE_URL)
+        }
+        if (business.legal?.additionalDocs?.length) {
+            await deleteImages(business.legal.additionalDocs, process.env.BASE_URL)
+        }
         res.json({ message: 'Business deleted', business: businessResponseDTO(business) })
     } catch (error) {
         next(error)
@@ -46,26 +51,34 @@ export const deleteBusiness = async (req, res, next) => {
 }
 
 export const updateStep = async (req, res, next) => {
-    try {
-        let processed = [];
-        if (req.files && req.files.length > 0) {
-            processed = await Promise.all(
-                req.files.map(async file => {
-                    const hash = await getBlurhash(file.path);
-                    return {
-                        url: `${process.env.BASE_URL}/${file.path}`,
-                        blurhash: hash
-                    };
-                })
-            );
-        }
 
+    try {
         const step = req.params.step;
         const businessId = req.params.id;
         const data = req.body;
-        console.log(data)
+        const ownerId = req.user.id;
+        let processed = [];
+
+        // Extract images to delete (case-insensitive check)
+        const toDelete = [].concat(req.body.toDelete || req.body.ToDelete || []);
+        // Process new images first
+        const images = req.files?.images || [];
+        const docs = req.files?.additionalDocs || [];
+
+        if (step === 'images' && images.length) {
+            processed = await processImages(images, process.env.BASE_URL);
+            data.images = processed;
+        }
+
         if (step === 'rooms') {
-            if (typeof data.rooms === 'string') data.rooms = JSON.parse(data.rooms);
+            if (typeof data.rooms === 'string') {
+                data.rooms = JSON.parse(data.rooms);
+            }
+
+            if (images.length) {
+                processed = await processImages(images, process.env.BASE_URL);
+            }
+
             if (Array.isArray(data.rooms)) {
                 data.rooms = data.rooms.map(room => ({
                     ...room,
@@ -74,19 +87,43 @@ export const updateStep = async (req, res, next) => {
             }
         }
 
-        if (step === 'images') {
-            data.images = processed;
+        if (step === 'legal' && docs.length) {
+            const uploadedDocs = docs.map(f => `${process.env.BASE_URL}/${f.path}`);
+            data.additionalDocs = Array.isArray(data.additionalDocs)
+                ? [...data.additionalDocs, ...uploadedDocs]
+                : uploadedDocs;
         }
 
-        const result = await businessService.updateStep(businessId, step, data)
+        // Handle deletions after processing new files
+        let deletedUrls = [];
+        if (toDelete.length > 0) {
+            deletedUrls = await deleteImages(
+                toDelete,
+                process.env.BASE_URL,
+                ownerId,
+                step,
+                businessId
+            );
+        }
+
+        // Update step with both new data and deletions
+        const result = await businessService.updateStep(
+            businessId,
+            step,
+            data,
+            toDelete
+        );
+
         res.json({
             business: businessResponseDTO(result.business),
             ...(result.rooms && { rooms: result.rooms })
-        })
+        });
     } catch (error) {
+        console.error('Error in updateStep:', error);
         next(error);
     }
 };
+
 export const publishBusiness = async (req, res, next) => {
     try {
         const businessId = req.params.id

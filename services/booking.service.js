@@ -1,0 +1,48 @@
+import Booking from '../model/booking/booking.model.js'
+import Payment from '../model/payment/payment.model.js'
+import Guest from '../model/guest/guest.model.js'
+
+
+export const createBookingService = async ({ item, kind, checkIn, checkOut, guest, userId }) => {
+    let guestDoc = null
+    console.log(item, kind, checkIn, checkOut, guest, userId)
+    if (!userId && guest) {
+        guestDoc = await Guest.create(guest)
+    }
+
+    const booking = await Booking.create({
+        item,
+        kind,
+        user: userId || undefined,
+        guest: guestDoc?._id,
+        checkIn: kind === 'Room' ? checkIn : undefined,
+        checkOut: kind === 'Room' ? checkOut : undefined,
+        eventDate: kind === 'Event' ? checkIn : undefined,
+        status: 'Pending',
+    })
+
+    return booking
+}
+
+export const getBookingsService = async (userId) => {
+    const filter = userId ? { user: userId } : {}
+    return Booking.find(filter).populate('item guest')
+}
+
+
+export const linkTxRefToBooking = async (bookingId, tx_ref) => {
+    await Booking.findByIdAndUpdate(bookingId, { $set: { tx_ref } })
+}
+
+export const attachPaymentToBooking = async (tx_ref, bookingId, paymentId) => {
+    const payment = await Payment.findOne({ tx_ref })
+    if (!payment) throw new Error('Payment not found')
+
+    const booking = await Booking.findOne({ _id: bookingId })
+    if (!booking) throw new Error('Booking not found for this payment')
+
+    booking.payment = paymentId
+    booking.status = 'Confirmed'
+    await booking.save()
+    return booking
+}

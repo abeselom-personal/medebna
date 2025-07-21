@@ -9,16 +9,17 @@ export const init = async (req, res, next) => {
         )
         res.status(200).json(result)
     } catch (err) {
+        console.log(err)
         next(err)
     }
 }
 
 export const verify = async (req, res, next) => {
     try {
-        console.log("reached")
         const result = await paymentService.verifyPayment(req.params.tx_ref)
         res.status(200).json(result)
     } catch (err) {
+        console.log(err)
         next(err)
     }
 }

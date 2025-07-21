@@ -6,6 +6,8 @@ import businessRouter from '../routes/business.route.js'
 import paymentRouter from '../routes/payment.route.js'
 import eventRouter from '../routes/event.route.js'
 import roomRouter from '../routes/room.route.js'
+import favoriteRouter from '../routes/favorite.route.js'
+import bookingRouter from '../routes/booking.route.js'
 
 const router = express.Router()
 
@@ -16,6 +18,8 @@ router.use('/business', businessRouter)
 router.use('/payment', paymentRouter)
 router.use('/rooms', roomRouter)
 router.use('/events', eventRouter)
+router.use('/favorites', favoriteRouter)
+router.use('/bookings', bookingRouter)
 
 //router.use('/api', paymentRouter)
 //router.use('/hotel', hotelRouter)

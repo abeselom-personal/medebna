@@ -166,7 +166,14 @@ router.post('/:id/publish', businessController.publishBusiness)
  *             schema:
  *               $ref: '#/components/schemas/BusinessResponse'
  */
-router.post('/:id/:step', upload.array('images', 10), businessController.updateStep)
+router.post(
+    '/:id/:step',
+    upload.fields([
+        { name: 'images', maxCount: 10 },
+        { name: 'additionalDocs', maxCount: 10 }
+    ]),
+    businessController.updateStep
+)
 
 /**
  * @swagger

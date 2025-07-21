@@ -1,10 +1,12 @@
+// services/payment.service.js
 import axios from 'axios'
-import { v4 as uuid } from 'uuid'
+import { parse, v4 as uuid } from 'uuid'
 import config from '../config/config.js'
 import Business from '../model/business/business.model.js'
 import Payment from '../model/payment/payment.model.js'
 import Room from '../model/room/room.model.js'
 import Event from '../model/event/event.model.js'
+import * as bookingService from './booking.service.js'
 
 export const initPayment = async ({
     businessId, amount, currency,
@@ -19,7 +21,7 @@ export const initPayment = async ({
 
     const tx_ref = `${metadata.paymentType || 'unknown'}-${uuid()}-${Date.now()}`
     const generatedCallbackUrl = config.callbackUrl + tx_ref
-    const generatedReturnUrl = config.returnUrl + tx_ref
+    const generatedReturnUrl = config.returnUrl
 
     const payload = {
         amount,
@@ -31,7 +33,7 @@ export const initPayment = async ({
         tx_ref,
         return_url: generatedReturnUrl,
         callback_url: generatedCallbackUrl,
-        metadata, // keep sending metadata as is
+        meta: metadata,
         customization: {
             title: metadata.paymentType || 'payment',
             logo: null
@@ -39,7 +41,7 @@ export const initPayment = async ({
     }
 
     let resp
-    // Replace error handling with clearer message extraction
+    console.log(payload)
     try {
         resp = await axios.post(
             'https://api.chapa.co/v1/transaction/initialize',
@@ -47,7 +49,6 @@ export const initPayment = async ({
             { headers: { Authorization: `Bearer ${config.chapa.secretKey}` } }
         )
     } catch (err) {
-        console.log(err)
         const message = err.response?.data?.message || err.message || JSON.stringify(err)
         throw new Error('Failed to initialize payment: ' + message)
     }
@@ -68,6 +69,11 @@ export const initPayment = async ({
         },
         raw: null
     })
+
+    if (metadata.bookingId) {
+        await bookingService.linkTxRefToBooking(metadata.bookingId, tx_ref)
+    }
+
     return {
         checkout_url: resp.data.data.checkout_url,
         tx_ref
@@ -89,7 +95,7 @@ export const verifyPayment = async (tx_ref) => {
 
     const data = resp?.data?.data
     if (!data || !data.status || data.status !== 'success') throw new Error('Payment not successful')
-
+    console.log(data)
     const type = data.tx_ref?.split('-')?.[0] || ''
     const meta = data.customization?.description ? safeParseJSON(data.customization.description) : {}
 
@@ -100,14 +106,18 @@ export const verifyPayment = async (tx_ref) => {
     if (type === 'event' && meta.sourceId) {
         await Event.updateOne({ _id: meta.sourceId }, { $set: { paid: true } }).catch(() => { })
     }
-    await Payment.findOneAndUpdate(
+
+    const paymentDoc = await Payment.findOneAndUpdate(
         { tx_ref: data.tx_ref },
         {
             reference: data.reference,
             status: data.status,
             raw: data
-        }
-    ).catch(() => { })
+        },
+        { new: true }
+    )
+
+    await bookingService.attachPaymentToBooking(data.tx_ref, data.meta.bookingId, paymentDoc._id)
 
     return data
 }

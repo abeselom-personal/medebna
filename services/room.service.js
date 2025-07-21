@@ -1,4 +1,5 @@
 // services/room.service.js
+import mongoose from 'mongoose'
 import Room from '../model/room/room.model.js'
 
 export const createRoom = async (data) => {
@@ -9,18 +10,57 @@ export const createRoom = async (data) => {
 
 export const createMultipleRooms = async (rooms, createdBy) => {
     const prepared = rooms.map(r => ({ ...r, createdBy }))
-    console.log(prepared)
     return Room.insertMany(prepared)
 }
 
+const addFavoritesAggregation = (userId = null) => {
+    const match = [
+        { $eq: ['$item', '$$roomId'] },
+        { $eq: ['$kind', 'Room'] }
+    ]
+    if (userId) match.push({ $eq: ['$user', new mongoose.Types.ObjectId(userId)] })
+
+    return [
+        {
+            $lookup: {
+                from: 'favorites',
+                let: { roomId: '$_id' },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: { $and: match }
+                        }
+                    }
+                ],
+                as: 'favorites'
+            }
+        },
+        {
+            $addFields: {
+                favoritesCount: { $size: '$favorites' },
+                isFavorite: { $gt: [{ $size: '$favorites' }, 0] }
+            }
+        }
+    ]
+}
+
 export const getAllRooms = async (filter = {}, limit = 100, skip = 0) => {
-    return Room.find(filter).limit(limit).skip(skip).sort({ createdAt: -1 })
+    return Room.aggregate([
+        { $match: filter },
+        { $sort: { createdAt: -1 } },
+        { $skip: skip },
+        { $limit: limit },
+        ...addFavoritesAggregation()
+    ])
 }
 
 export const getRoomById = async (id) => {
-    const room = await Room.findById(id)
-    if (!room) throw new Error('Room not found')
-    return room
+    const result = await Room.aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(id) } },
+        ...addFavoritesAggregation()
+    ])
+    if (!result.length) throw new Error('Room not found')
+    return result[0]
 }
 
 export const updateRoom = async (id, updates) => {
@@ -36,7 +76,11 @@ export const deleteRoom = async (id) => {
 }
 
 export const getRoomsByUser = async (userId) => {
-    return Room.find({ createdBy: userId }).sort({ createdAt: -1 })
+    return Room.aggregate([
+        { $match: { createdBy: new mongoose.Types.ObjectId(userId) } },
+        { $sort: { createdAt: -1 } },
+        ...addFavoritesAggregation(userId)
+    ])
 }
 
 export const searchRooms = async (query = {}) => {
@@ -47,7 +91,12 @@ export const searchRooms = async (query = {}) => {
         filter['availability.from'] = { $lte: new Date(query.from) }
         filter['availability.to'] = { $gte: new Date(query.to) }
     }
-    return Room.find(filter).sort({ createdAt: -1 })
+
+    return Room.aggregate([
+        { $match: filter },
+        { $sort: { createdAt: -1 } },
+        ...addFavoritesAggregation()
+    ])
 }
 
 export const isRoomAvailable = async (roomId, from, to) => {

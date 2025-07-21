@@ -25,45 +25,66 @@ export const getBusinessById = async (id) => {
 }
 
 export const deleteBusiness = async (id, ownerId) => {
-    // soft delete example: update flag or remove, adjust as needed
     const business = await Business.findOneAndDelete({ _id: id, ownerId })
     if (!business) throw new Error('Business not found or unauthorized')
     return business
 }
 
-export const updateStep = async (businessId, step, data) => {
+export const updateStep = async (businessId, step, data, toDelete = []) => {
     const business = await Business.findById(businessId)
     if (!business) throw new Error('Business not found')
+
     let rooms = []
-    // Update data keys based on step
+    if (toDelete.length > 0) {
+        if (step === 'legal') {
+            business.legal.additionalDocs = business.legal.additionalDocs?.filter(
+                doc => !toDelete.includes(doc)
+            ) || [];
+        }
+        else if (step === 'rooms') {
+            await Rooms.updateMany(
+                { businessId, 'images.url': { $in: toDelete } },
+                { $pull: { images: { url: { $in: toDelete } } } }
+            );
+        }
+        else {
+            business.images = business.images.filter(
+                img => !toDelete.includes(img.url)
+            );
+        }
+    }
+
     switch (step) {
         case 'basic':
             business.name = data.name || business.name
             business.address = data.address || business.address
             business.type = data.type || business.type
-            business.stepsCompleted[step] = true
             break
+
         case 'contacts':
             business.contact = data.contact || business.contact
-            business.stepsCompleted[step] = true
             break
+
         case 'amenities':
             business.amenities = data.amenities || business.amenities
-            business.stepsCompleted[step] = true
             break
+
         case 'images':
             business.images = data.images || business.images
-            business.stepsCompleted[step] = true
             break
+
         case 'legal':
-            business.legal = data || business.legal
-            business.stepsCompleted[step] = true
+            business.legal = {
+                licenseNumber: data.licenseNumber || business.legal?.licenseNumber,
+                taxInfo: data.taxInfo || business.legal?.taxInfo,
+                additionalDocs: data.additionalDocs || business.legal?.additionalDocs || [],
+            }
             break
 
         case 'paymentSettings':
             business.paymentSettings = data || business.paymentSettings
-            business.stepsCompleted[step] = true
             break
+
         case 'rooms':
             if (!data?.rooms?.length) break
             const roomsWithBusiness = data.rooms.map(room => ({
@@ -71,12 +92,13 @@ export const updateStep = async (businessId, step, data) => {
                 businessId: business._id
             }))
             rooms = await roomService.createMultipleRooms(roomsWithBusiness)
-            business.stepsCompleted[step] = true
             break
+
         default:
             throw new Error('Invalid step')
     }
 
+    business.stepsCompleted[step] = true
     await business.save()
     return step === 'rooms' ? { business, rooms } : { business }
 }

@@ -19,8 +19,8 @@ const UserSchema = new Schema({
     paymentMethod: { type: String, enum: ["chapa", "stripe"] },
     productId: String,
     eventTypeIds: [String],
-    roomIds: [String],
-    carIds: [String],
+    eventIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
+    roomIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Room' }],
     refreshToken: { type: String, select: false },
 }, { timestamps: true })
 

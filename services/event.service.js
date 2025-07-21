@@ -8,14 +8,78 @@ export const createEvent = async (data) => {
     return event.save()
 }
 
-export const getEventsByUser = (userId) => {
-    return Event.find({ createdBy: userId }).sort({ date: 1 })
+export const getEventsByUser = async (userId) => {
+    return Event.aggregate([
+        { $match: { createdBy: new mongoose.Types.ObjectId(userId) } },
+        { $sort: { date: 1 } },
+        {
+            $lookup: {
+                from: 'favorites',
+                let: { eventId: '$_id' },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ['$user', new mongoose.Types.ObjectId(userId)] },
+                                    { $eq: ['$item', '$$eventId'] },
+                                    { $eq: ['$kind', 'Event'] }
+                                ]
+                            }
+                        }
+                    }
+                ],
+                as: 'favorites'
+            }
+        },
+        {
+            $addFields: {
+                isFavorite: { $gt: [{ $size: '$favorites' }, 0] }
+            }
+        },
+        {
+            $project: {
+                favorites: 0
+            }
+        }
+    ])
 }
 
 export const getEventById = async (id) => {
-    const event = await Event.findById(id)
-    if (!event) throw new Error('Event not found')
-    return event
+    const result = await Event.aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(id) } },
+        {
+            $lookup: {
+                from: 'favorites',
+                let: { eventId: '$_id' },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ['$item', '$$eventId'] },
+                                    { $eq: ['$kind', 'Event'] }
+                                ]
+                            }
+                        }
+                    }
+                ],
+                as: 'favorites'
+            }
+        },
+        {
+            $addFields: {
+                isFavorite: { $gt: [{ $size: '$favorites' }, 0] }
+            }
+        },
+        {
+            $project: {
+                favorites: 0
+            }
+        }
+    ])
+    if (!result.length) throw new Error('Event not found')
+    return result[0]
 }
 
 export const updateEvent = async (id, updates, deleteImgs = [], newFiles = [], userId, baseUrl) => {
@@ -57,4 +121,5 @@ export const deleteEvent = async (id, userId) => {
         const urls = e.images.map(i => i.url)
         await imageService.deleteImages(urls, process.env.BASE_URL)
     }
+    return e
 }
