@@ -3,7 +3,7 @@ import * as service from '../../services/booking.service.js'
 
 export const createBooking = async (req, res) => {
     try {
-        const userId = req.user?._id
+        const userId = req?.user?._id ?? null
         const booking = await service.createBookingService({ ...req.body, userId })
         res.status(201).json(booking)
     } catch (err) {

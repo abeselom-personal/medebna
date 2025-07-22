@@ -59,7 +59,7 @@ const router = Router()
  *       400:
  *         description: Validation error
  */
-router.post('/', verifyJWT, controller.createBooking)
+router.post('/', controller.createBooking)
 router.get('/', verifyJWT, controller.getBookings)
 
 export default router

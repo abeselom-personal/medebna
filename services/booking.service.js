@@ -5,7 +5,6 @@ import Guest from '../model/guest/guest.model.js'
 
 export const createBookingService = async ({ item, kind, checkIn, checkOut, guest, userId }) => {
     let guestDoc = null
-    console.log(item, kind, checkIn, checkOut, guest, userId)
     if (!userId && guest) {
         guestDoc = await Guest.create(guest)
     }
