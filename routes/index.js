@@ -8,6 +8,7 @@ import eventRouter from '../routes/event.route.js'
 import roomRouter from '../routes/room.route.js'
 import favoriteRouter from '../routes/favorite.route.js'
 import bookingRouter from '../routes/booking.route.js'
+import financialRouter from '../routes/booking.route.js'
 
 const router = express.Router()
 
@@ -75,4 +76,12 @@ router.use('/favorites', favoriteRouter)
  *     description: Booking creation, history, and cancellation
  */
 router.use('/bookings', bookingRouter)
+
+/**
+ * @swagger
+ * tags:
+ *   - name: Financial
+ *     description: Financial reports
+ */
+router.use('/financial', financialRouter)
 export default router

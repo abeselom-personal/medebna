@@ -78,7 +78,7 @@ const router = Router()
  *         $ref: '#/components/schemas/ErrorResponse'
  */
 
-router.post('/init', verifyJWT, validateInit, paymentController.init)
+router.post('/init', validateInit, paymentController.init)
 /**
  * @swagger
  * /payment/verify/{tx_ref}:
