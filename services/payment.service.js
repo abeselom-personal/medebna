@@ -36,7 +36,7 @@ export const initPayment = async ({
         meta: metadata,
         customization:
         {
-            title: biz.name || "Medebna Payment",
+            title: (biz.name?.length > 16 ? biz.name.slice(0, 13) + '...' : biz.name) || "Medebna Payment",
             description: "I love online payments"
         },
     }

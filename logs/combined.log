@@ -2251,3 +2251,7 @@
 {"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-22T10:55:01.689Z"}
 {"level":"info","message":"MongoDB connected","timestamp":"2025-07-22T10:55:04.576Z"}
 {"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-22T10:55:04.596Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-22T11:21:01.022Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-22T11:21:01.041Z"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-07-22T11:21:02.581Z"}
+{"level":"info","message":"Server running at http://0.0.0.0:5000","timestamp":"2025-07-22T11:21:02.601Z"}
