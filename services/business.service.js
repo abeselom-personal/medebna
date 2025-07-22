@@ -13,7 +13,7 @@ export const createBusiness = async (ownerId, type) => {
 }
 
 export const getBusinessesByOwner = async (ownerId) => {
-    return Business.find({ ownerId, published: false })
+    return Business.find({ ownerId })
 }
 
 export const getBusinessById = async (id) => {
