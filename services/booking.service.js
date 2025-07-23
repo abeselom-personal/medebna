@@ -70,6 +70,31 @@ export const getBookingsById = async (_id) => {
 
 }
 
+export const getBookingsByUserId = async (userId) => {
+    const booking = await Booking.find({ user: userId }).populate('guest')
+
+    if (!booking) return null
+
+    if (booking.kind === 'Room') {
+        await booking.populate({
+            path: 'item',
+            model: 'Room',
+            populate: { path: 'businessId', model: 'Business' }
+        })
+    } else if (booking.kind === 'Event') {
+        await booking.populate({
+            path: 'item',
+            model: 'Event',
+            populate: { path: 'businessId', model: 'Business' }
+        })
+    }
+
+    return booking
+
+
+}
+
+
 export const linkTxRefToBooking = async (bookingId, tx_ref) => {
     await Booking.findByIdAndUpdate(bookingId, { $set: { tx_ref } })
 }
