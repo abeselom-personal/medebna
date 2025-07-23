@@ -23,14 +23,31 @@ export const createBookingService = async ({ item, kind, checkIn, checkOut, gues
     return booking
 }
 
-export const getBookingsService = async (userId) => {
-    const filter = userId ? { user: userId } : {}
-    return Booking.find(filter).populate(['item', 'guest'])
+export const getBookingsService = async () => {
+    const bookings = await Booking.find().populate('guest')
+
+    for (const booking of bookings) {
+        if (booking.kind === 'Room') {
+            await booking.populate({
+                path: 'item',
+                model: 'Room',
+                populate: { path: 'businessId', model: 'Business' },
+            })
+        } else if (booking.kind === 'Event') {
+            await booking.populate({
+                path: 'item',
+                model: 'Event',
+                populate: { path: 'businessId', model: 'Business' },
+            })
+        }
+    }
+
+    return bookings
 }
 
 
-export const getBookingsById = async (id) => {
-    const booking = await Booking.findById(id).populate('guest')
+export const getBookingsById = async (userId) => {
+    const booking = await Booking.find({ user: userId }).populate('guest')
 
     if (!booking) return null
 

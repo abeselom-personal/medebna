@@ -8,7 +8,7 @@ import eventRouter from '../routes/event.route.js'
 import roomRouter from '../routes/room.route.js'
 import favoriteRouter from '../routes/favorite.route.js'
 import bookingRouter from '../routes/booking.route.js'
-import financialRouter from '../routes/booking.route.js'
+import financialRouter from '../routes/financial.route.js'
 import bankRouter from '../routes/bank.route.js'
 
 const router = express.Router()

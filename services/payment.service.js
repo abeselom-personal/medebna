@@ -21,7 +21,7 @@ export const initPayment = async ({
 
     const tx_ref = `${metadata.paymentType || 'unknown'}-${uuid()}-${Date.now()}`
     const generatedCallbackUrl = config.callbackUrl + tx_ref
-    const generatedReturnUrl = config.returnUrl
+    const generatedReturnUrl = config.returnUrl + metadata.bookingId
 
     const payload = {
         amount,
