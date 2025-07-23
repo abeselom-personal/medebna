@@ -1,6 +1,6 @@
 // services/payment.service.js
 import axios from 'axios'
-import { parse, v4 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid'
 import config from '../config/config.js'
 import Business from '../model/business/business.model.js'
 import Payment from '../model/payment/payment.model.js'
@@ -34,15 +34,17 @@ export const initPayment = async ({
         return_url: generatedReturnUrl,
         callback_url: generatedCallbackUrl,
         meta: metadata,
-        customization:
-        {
+        customization: {
             title: (biz.name?.length > 16 ? biz.name.slice(0, 13) + '...' : biz.name) || "Medebna Payment",
-            description: "I love online payments"
-        },
+            description: "I love online payments",
+        }
     }
 
+    const subAcc = biz?.paymentSettings?.subAccount
+    if (subAcc?.id) {
+        payload.subaccounts = { id: subAcc.id }
+    }
     let resp
-    console.log(payload)
     try {
         resp = await axios.post(
             'https://api.chapa.co/v1/transaction/initialize',
@@ -50,7 +52,6 @@ export const initPayment = async ({
             { headers: { Authorization: `Bearer ${config.chapa.secretKey}` } }
         )
     } catch (err) {
-        console.log(err.response.data)
         const message = err.response?.data?.message || err.message || JSON.stringify(err)
         throw new Error('Failed to initialize payment: ' + message)
     }
@@ -81,6 +82,7 @@ export const initPayment = async ({
         tx_ref
     }
 }
+
 
 export const verifyPayment = async (tx_ref) => {
     if (!tx_ref) throw new Error('Missing tx_ref')
@@ -131,3 +133,62 @@ const safeParseJSON = (str) => {
         return {}
     }
 }
+
+export const createSubaccount = async ({
+    business_name,
+    account_name,
+    bank_code,
+    account_number,
+    split_value = 0.2,
+    split_type = 'percentage'
+}) => {
+    const payload = {
+        business_name,
+        account_name,
+        bank_code,
+        account_number,
+        split_value,
+        split_type
+    };
+
+    const headers = {
+        Authorization: `Bearer ${config.chapa.secretKey}`,
+        'Content-Type': 'application/json'
+    };
+
+    try {
+        const response = await axios.post('https://api.chapa.co/v1/subaccount', payload, { headers });
+        return response.data.data.subaccount_id;
+    } catch (err) {
+        console.error(err.response?.data || err.message);
+        throw err;
+    }
+};
+
+export const deleteSubaccount = async (id) => {
+    const headers = {
+        Authorization: `Bearer ${config.chapa.secretKey}`,
+        'Content-Type': 'application/json'
+    };
+    try {
+        await axios.delete(`https://api.chapa.co/v1/subaccount/${id}`, { headers });
+    }
+    catch (error) {
+        return null
+    }
+};
+
+export const getSubaccounts = async () => {
+    const headers = {
+        Authorization: `Bearer ${config.chapa.secretKey}`,
+        'Content-Type': 'application/json'
+    };
+    try {
+        const response = await axios.delete(`https://api.chapa.co/v1/subaccount`, { headers });
+        console.log(response)
+        return response.data
+    }
+    catch (error) {
+        return null
+    }
+};

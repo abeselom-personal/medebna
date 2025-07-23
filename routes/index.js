@@ -9,6 +9,7 @@ import roomRouter from '../routes/room.route.js'
 import favoriteRouter from '../routes/favorite.route.js'
 import bookingRouter from '../routes/booking.route.js'
 import financialRouter from '../routes/booking.route.js'
+import bankRouter from '../routes/bank.route.js'
 
 const router = express.Router()
 
@@ -84,4 +85,13 @@ router.use('/bookings', bookingRouter)
  *     description: Financial reports
  */
 router.use('/financial', financialRouter)
+
+/**
+ * @swagger
+ * tags:
+ *   - name: Banks
+ *     description: Banks reports
+ */
+router.use('/bank', bankRouter)
+
 export default router

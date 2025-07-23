@@ -3,6 +3,7 @@ import Business from '../model/business/business.model.js'
 import Events from '../model/event/event.model.js'
 import Rooms from '../model/room/room.model.js'
 import * as roomService from './room.service.js'
+import * as paymentService from './payment.service.js'
 import { calculateProgress } from '../utils/progress.util.js'
 
 export const createBusiness = async (ownerId, type) => {
@@ -82,9 +83,31 @@ export const updateStep = async (businessId, step, data, toDelete = []) => {
             break
 
         case 'paymentSettings':
-            business.paymentSettings = data || business.paymentSettings
-            break
-
+            const chapaSubaccountId = await paymentService.createSubaccount({
+                business_name: business.name,
+                account_name: data.subAccount.account_name,
+                bank_code: data.subAccount.bank_code,
+                account_number: data.subAccount.account_number,
+                split_value: data.subAccount.split_value,
+                split_type: data.subAccount.split_type
+            });
+            if (chapaSubaccountId == null) {
+                break
+            }
+            business.paymentSettings = {
+                currencies: data.currencies || business.paymentSettings?.currencies || [],
+                details: data.details || business.paymentSettings?.details || {},
+                subAccount: {
+                    id: chapaSubaccountId,
+                    business_name: business.name,
+                    account_name: data.subAccount.account_name,
+                    bank_code: data.subAccount.bank_code,
+                    account_number: data.subAccount.account_number,
+                    split_value: data.subAccount.split_value,
+                    split_type: data.subAccount.split_type
+                }
+            };
+            break;
         case 'rooms':
             if (!data?.rooms?.length) break
             const roomsWithBusiness = data.rooms.map(room => ({

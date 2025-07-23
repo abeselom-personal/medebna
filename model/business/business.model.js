@@ -38,7 +38,16 @@ const BusinessSchema = new mongoose.Schema({
     },
     paymentSettings: {
         currencies: [{ type: String }],
-        details: mongoose.Schema.Types.Mixed
+        details: mongoose.Schema.Types.Mixed,
+        subAccount: {
+            id: String, // chapa subaccount id
+            account_name: String,
+            business_name: String,
+            bank_code: Number,
+            account_number: String,
+            split_type: { type: String, enum: ['flat', 'percentage'] },
+            split_value: Number
+        }
     },
     stepsCompleted: { type: StepFlags, default: () => ({}) },
     published: { type: Boolean, default: false },

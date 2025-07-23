@@ -3,7 +3,6 @@ import express from 'express'
 import * as businessController from '../controller/business/business.controller.js'
 import verifyJWT from '../middleware/verifyJWT.js'
 import upload from '../middleware/upload.js'
-import swaggerJSDoc from 'swagger-jsdoc'
 const router = express.Router()
 
 /**

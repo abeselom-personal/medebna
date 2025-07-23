@@ -60,6 +60,10 @@ const router = Router()
  *         description: Validation error
  */
 router.post('/', controller.createBooking)
+
+router.get('/:id', controller.getBookingById)
+
 router.get('/', verifyJWT, controller.getBookings)
+
 
 export default router
