@@ -47,27 +47,19 @@ export const getBookingsService = async () => {
 
 
 export const getBookingsById = async (_id) => {
-    const booking = await Booking.find({ _id }).populate('guest')
-
+    const booking = await Booking.findOne({ _id }).populate('guest')
     if (!booking) return null
 
-    if (booking.kind === 'Room') {
-        await booking.populate({
-            path: 'item',
-            model: 'Room',
-            populate: { path: 'businessId', model: 'Business' }
-        })
-    } else if (booking.kind === 'Event') {
-        await booking.populate({
-            path: 'item',
-            model: 'Event',
-            populate: { path: 'businessId', model: 'Business' }
-        })
+    const populateOptions = {
+        path: 'item',
+        populate: { path: 'businessId', model: 'Business' }
     }
 
+    if (booking.kind === 'Room') populateOptions.model = 'Room'
+    else if (booking.kind === 'Event') populateOptions.model = 'Event'
+
+    await booking.populate(populateOptions)
     return booking
-
-
 }
 
 export const getBookingsByUserId = async (userId) => {
