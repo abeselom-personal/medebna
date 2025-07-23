@@ -46,8 +46,8 @@ export const getBookingsService = async () => {
 }
 
 
-export const getBookingsById = async (userId) => {
-    const booking = await Booking.find({ user: userId }).populate('guest')
+export const getBookingsById = async (id) => {
+    const booking = await Booking.find({ id }).populate('guest')
 
     if (!booking) return null
 
