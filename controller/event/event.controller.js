@@ -61,41 +61,41 @@ export const createEvent = async (req, res, next) => {
         }
 
         // Add this before processing performers/sponsors
-        const performerImages = req.files?.filter(f => f.fieldname.startsWith('performers['));
-        const sponsorLogos = req.files?.filter(f => f.fieldname.startsWith('sponsors['));
+        // const performerImages = req.files?.filter(f => f.fieldname.startsWith('performers['));
+        // const sponsorLogos = req.files?.filter(f => f.fieldname.startsWith('sponsors['));
 
         // Process performers
-        if (parsedBody['performers[0].name']) {
-            let performerIndex = 0;
-            while (parsedBody[`performers[${performerIndex}].name`]) {
-                const matched = performerImages.find(f => f.fieldname === `performers[${performerIndex}].image`);
-                const processed = matched ? await processImages([matched], process.env.BASE_URL) : [];
-
-                data.performers.push({
-                    name: parsedBody[`performers[${performerIndex}].name`],
-                    role: parsedBody[`performers[${performerIndex}].role`] || '',
-                    image: processed[0]?.url || ''
-                });
-                performerIndex++;
-            }
-        }
-
-        // Process sponsors
-        if (parsedBody['sponsors[0].name']) {
-            let sponsorIndex = 0;
-            while (parsedBody[`sponsors[${sponsorIndex}].name`]) {
-                const matched = sponsorLogos.find(f => f.fieldname === `sponsors[${sponsorIndex}].logo`);
-                const processed = matched ? await processImages([matched], process.env.BASE_URL) : [];
-
-                data.sponsors.push({
-                    name: parsedBody[`sponsors[${sponsorIndex}].name`],
-                    logo: processed[0]?.url || '',
-                    website: parsedBody[`sponsors[${sponsorIndex}].website`] || ''
-                });
-                sponsorIndex++;
-            }
-        }
-
+        // if (parsedBody['performers[0].name']) {
+        //     let performerIndex = 0;
+        //     while (parsedBody[`performers[${performerIndex}].name`]) {
+        //         const matched = performerImages.find(f => f.fieldname === `performers[${performerIndex}].image`);
+        //         const processed = matched ? await processImages([matched], process.env.BASE_URL) : [];
+        //
+        //         data.performers.push({
+        //             name: parsedBody[`performers[${performerIndex}].name`],
+        //             role: parsedBody[`performers[${performerIndex}].role`] || '',
+        //             image: processed[0]?.url || ''
+        //         });
+        //         performerIndex++;
+        //     }
+        // }
+        //
+        // // Process sponsors
+        // if (parsedBody['sponsors[0].name']) {
+        //     let sponsorIndex = 0;
+        //     while (parsedBody[`sponsors[${sponsorIndex}].name`]) {
+        //         const matched = sponsorLogos.find(f => f.fieldname === `sponsors[${sponsorIndex}].logo`);
+        //         const processed = matched ? await processImages([matched], process.env.BASE_URL) : [];
+        //
+        //         data.sponsors.push({
+        //             name: parsedBody[`sponsors[${sponsorIndex}].name`],
+        //             logo: processed[0]?.url || '',
+        //             website: parsedBody[`sponsors[${sponsorIndex}].website`] || ''
+        //         });
+        //         sponsorIndex++;
+        //     }
+        // }
+        //
         // Process amenities
         if (parsedBody['amenities[0].name']) {
             let amenityIndex = 0;

@@ -10,6 +10,7 @@ import favoriteRouter from '../routes/favorite.route.js'
 import bookingRouter from '../routes/booking.route.js'
 import dashbordRouter from '../routes/dashboard.route.js'
 import bankRouter from '../routes/bank.route.js'
+import discountRouter from '../routes/discount.route.js'
 
 const router = express.Router()
 
@@ -93,5 +94,13 @@ router.use('/dashboard', dashbordRouter)
  *     description: Banks reports
  */
 router.use('/bank', bankRouter)
+
+/**
+ * @swagger
+ * tags:
+ *   - name: Banks
+ *     description: Banks reports
+ */
+router.use('/discount', discountRouter)
 
 export default router

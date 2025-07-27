@@ -20,7 +20,12 @@ const ticketSchema = new mongoose.Schema({
         },
         quantity: { type: Number, default: 1 },
         purchasedAt: { type: Date, default: Date.now }
-    }]
+
+    }],
+    discounts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'DiscountRule'
+    }],
 }, { timestamps: true })
 
 export default mongoose.model('Ticket', ticketSchema)

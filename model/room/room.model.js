@@ -14,6 +14,24 @@ const roomSchema = new mongoose.Schema({
         }],
         validate: v => Array.isArray(v) && v.length > 0
     },
+    maxCapacity: { type: Number, required: true, min: 1 },
+    currentCapacity: { type: Number, default: 0, min: 0 },
+    discountRules: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'DiscountRule'
+    }],
+    currentDiscounts: [{
+        discountId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'DiscountRule'
+        },
+        activeFrom: Date,
+        activeTo: Date,
+        isActive: {
+            type: Boolean,
+            default: true
+        }
+    }],
     location: { type: String, trim: true },
     availability: {
         from: { type: Date, required: true },
@@ -46,5 +64,11 @@ roomSchema.pre('save', async function(next) {
     if (!exists) return next(new Error('Invalid businessId'))
     next()
 })
-
+roomSchema.pre('save', function(next) {
+    if (this.currentCapacity > this.maxCapacity) {
+        next(new Error('Current capacity cannot exceed maximum capacity'))
+    } else {
+        next()
+    }
+})
 export default mongoose.model('Room', roomSchema)

@@ -1,12 +1,12 @@
 // dto/room.dto.js
 export const roomCreateDto = (body, userId) => {
-    const { title, description, images, price, location, availability, businessId } = body;
-    return { title, description, images, price, location, availability, createdBy: userId, businessId };
+    const { title, description, images, price, location, availability, businessId, maxCapacity } = body;
+    return { title, description, images, price, location, availability, createdBy: userId, businessId, maxCapacity };
 };
 
 export const roomUpdateDto = (body) => {
     const allowed = {};
-    ['title', 'description', 'images', 'price', 'location', 'availability'].forEach(f => {
+    ['title', 'description', 'images', 'price', 'location', 'availability', 'maxCapacity'].forEach(f => {
         if (body[f] !== undefined) allowed[f] = body[f];
     });
     return allowed;
@@ -31,6 +31,8 @@ export const roomResponseDto = (room) => ({
     },
     createdBy: room.createdBy?.toString?.() || '',
     businessId: room.businessId?.toString?.() || '',
+    maxCapacity: room.maxCapacity || null,
+    currentCapacity: room.currentCapacity || 0,
     createdAt: room.createdAt || null,
     updatedAt: room.updatedAt || null,
     favoritesCount: room.favoritesCount || 0,

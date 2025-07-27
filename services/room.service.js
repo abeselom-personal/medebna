@@ -1,13 +1,22 @@
 // services/room.service.js
 import mongoose from 'mongoose'
+import * as DiscountService from './discount.service.js'
 import Room from '../model/room/room.model.js'
 
 export const createRoom = async (data) => {
-    const room = new Room(data)
+    const { discounts, ...roomData } = data
+    console.log(roomData)
+    const room = new Room(roomData)
     await room.save()
+
+    if (discounts) {
+        const discountDocs = await DiscountService.createDiscountRulesForTarget(room._id, 'Room', discounts)
+        room.discounts = discountDocs.map(d => d._id)
+        await room.save()
+    }
+
     return room
 }
-
 export const createMultipleRooms = async (rooms, createdBy) => {
     const prepared = rooms.map(r => ({ ...r, createdBy }))
     return Room.insertMany(prepared)

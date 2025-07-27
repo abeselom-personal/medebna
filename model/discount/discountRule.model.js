@@ -1,11 +1,16 @@
-// model/discountRule.model.js
 import mongoose from 'mongoose'
 
 const discountRuleSchema = new mongoose.Schema({
     target: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        refPath: 'targetType'
+        refPath: 'targetType',
+        validate: {
+            validator: function(v) {
+                return mongoose.Types.ObjectId.isValid(v)
+            },
+            message: props => `${props.value} is not a valid ObjectId`
+        }
     },
     targetType: {
         type: String,
@@ -25,4 +30,4 @@ const discountRuleSchema = new mongoose.Schema({
     enabled: { type: Boolean, default: true }
 }, { timestamps: true })
 
-module.exports = mongoose.model('DiscountRule', discountRuleSchema)
+export default mongoose.model('DiscountRule', discountRuleSchema)
