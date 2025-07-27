@@ -13,6 +13,7 @@ import swaggerConfig from './config/swagger.js'
 import initDatabase from './initDatabase.js'
 import logger from './utils/logger.js'
 import seedAdminUser from './scripts/seedAdmin.js'
+import removeRoomsStep from './scripts/seed.js'
 import routes from './routes/index.js'
 import { errorHandler } from './middleware/error.js'
 
@@ -31,6 +32,7 @@ app.use(cookieParser())
 
 seedAdminUser()
 initDatabase()
+removeRoomsStep()
 
 app.get('/', (_, res) => res.send('OK'))
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
