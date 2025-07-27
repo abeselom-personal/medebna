@@ -18,10 +18,26 @@ const router = express.Router()
  *     tags: [Authentication]
  *     summary: Register a user
  *     requestBody:
+ *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Register'
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               role:
+ *                 type: string
+ *                 enum: [customer, vendor]
+ *                 description: Optional. Defaults to 'customer'. Admin is not allowed.
  *     responses:
  *       200:
  *         description: Registered user

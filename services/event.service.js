@@ -1,140 +1,97 @@
-// services/event.service.js
-import mongoose from 'mongoose'
 import Event from '../model/event/event.model.js'
-import * as imageService from './imageUpload.service.js'
 
-export const createEvent = async (data) => {
-    const event = new Event(data)
-    return event.save()
-}
-
-export const getEventsByUser = async (userId) => {
-    return Event.aggregate([
-        { $match: { createdBy: new mongoose.Types.ObjectId(userId) } },
-        { $sort: { date: 1 } },
-        {
-            $lookup: {
-                from: 'favorites',
-                let: { eventId: '$_id' },
-                pipeline: [
-                    {
-                        $match: {
-                            $expr: {
-                                $and: [
-                                    { $eq: ['$user', new mongoose.Types.ObjectId(userId)] },
-                                    { $eq: ['$item', '$$eventId'] },
-                                    { $eq: ['$kind', 'Event'] }
-                                ]
-                            }
-                        }
-                    }
-                ],
-                as: 'favorites'
-            }
-        },
-        {
-            $addFields: {
-                isFavorite: { $gt: [{ $size: '$favorites' }, 0] }
-            }
-        },
-        {
-            $project: {
-                favorites: 0
-            }
-        }
-    ])
+export const createEvent = async (payload) => {
+    return await Event.create(payload)
 }
 
 export const getEventById = async (id) => {
-    const result = await Event.aggregate([
-        { $match: { _id: new mongoose.Types.ObjectId(id) } },
-        {
-            $lookup: {
-                from: 'favorites',
-                let: { eventId: '$_id' },
-                pipeline: [
-                    {
-                        $match: {
-                            $expr: {
-                                $and: [
-                                    { $eq: ['$item', '$$eventId'] },
-                                    { $eq: ['$kind', 'Event'] }
-                                ]
-                            }
-                        }
-                    }
-                ],
-                as: 'favorites'
-            }
-        },
-        {
-            $addFields: {
-                isFavorite: { $gt: [{ $size: '$favorites' }, 0] }
-            }
-        },
-        {
-            $project: {
-                favorites: 0
-            }
-        }
-
-        , {
-            $lookup: {
-                from: 'businesses',
-                localField: 'businessId',
-                foreignField: '_id',
-                as: 'business'
-            }
-        },
-        {
-            $unwind: {
-                path: '$business',
-                preserveNullAndEmptyArrays: true
-            }
-        }
-    ])
-    if (!result.length) throw new Error('Event not found')
-    return result[0]
+    return await Event.findById(id)
+        .populate('businessId createdBy')
 }
 
-export const updateEvent = async (id, updates, deleteImgs = [], newFiles = [], userId, baseUrl) => {
-    const session = await mongoose.startSession()
-    let result
+export const listEvents = async (filters = {}, { page = 1, limit = 10 } = {}) => {
+    const query = {}
+    if (filters.location) query.location = { $regex: filters.location, $options: 'i' }
+    if (filters.date) query.date = { $gte: new Date(filters.date) }
 
-    await session.withTransaction(async () => {
-        const event = await Event.findOne({ _id: id, createdBy: userId }).session(session)
-        if (!event) throw new Error('Event not found or unauthorized')
+    const events = await Event.find(query)
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .sort({ date: -1 })
+        .populate('businessId createdBy')
 
-        if (deleteImgs.length) {
-            for (const img of deleteImgs) {
-                if (!event.images.some(ei => ei.url === img)) {
-                    throw new Error(`Cannot delete image not owned by event: ${img}`)
-                }
-            }
-            event.images = event.images.filter(img => !deleteImgs.includes(img.url))
-        }
+    const total = await Event.countDocuments(query)
 
-        if (newFiles.length) {
-            const newImgs = await imageService.processImages(newFiles, baseUrl)
-            event.images.push(...newImgs)
-        }
-
-        Object.assign(event, updates)
-        result = await event.save({ session })
-    })
-
-    session.endSession()
-
-    if (deleteImgs.length) await imageService.deleteImages(deleteImgs, baseUrl)
-    return result
-}
-
-export const deleteEvent = async (id, userId) => {
-    const e = await Event.findOneAndDelete({ _id: id, createdBy: userId })
-    if (!e) throw new Error('Not found or unauthorized')
-    if (e.images?.length) {
-        const urls = e.images.map(i => i.url)
-        await imageService.deleteImages(urls, process.env.BASE_URL)
+    return {
+        data: events,
+        pagination: {
+            total,
+            page,
+            pages: Math.ceil(total / limit),
+        },
     }
-    return e
+}
+
+export const updateEvent = async (id, payload) => {
+    return await Event.findByIdAndUpdate(id, payload, { new: true })
+}
+
+export const deleteEvent = async (id) => {
+    return await Event.findByIdAndDelete(id)
+}
+
+// Ticket-related functions
+export const createTicketsForEvent = async (eventId, tickets) => {
+    return await Event.findByIdAndUpdate(
+        eventId,
+        { $push: { tickets: { $each: tickets } } },
+        { new: true }
+    )
+}
+
+export const addTicketType = async (eventId, ticketType) => {
+    return await Event.findByIdAndUpdate(
+        eventId,
+        { $push: { tickets: ticketType } },
+        { new: true }
+    )
+}
+
+export const updateTicketType = async (eventId, ticketId, update) => {
+    return await Event.findOneAndUpdate(
+        { _id: eventId, 'tickets._id': ticketId },
+        { $set: { 'tickets.$': { _id: ticketId, ...update } } },
+        { new: true }
+    )
+}
+
+export const deleteTicketType = async (eventId, ticketId) => {
+    return await Event.findByIdAndUpdate(
+        eventId,
+        { $pull: { tickets: { _id: ticketId } } },
+        { new: true }
+    )
+}
+
+// Image-related functions
+export const removeImages = async (eventId, imageUrls) => {
+    return await Event.findByIdAndUpdate(
+        eventId,
+        { $pull: { images: { url: { $in: imageUrls } } } },
+        { new: true }
+    )
+}
+
+// Additional utility functions
+export const getEventTickets = async (eventId) => {
+    const event = await Event.findById(eventId).select('tickets')
+    return event?.tickets || []
+}
+
+export const updateEventTickets = async (eventId, tickets) => {
+    return await Event.findByIdAndUpdate(
+        eventId,
+        { $set: { tickets } },
+        { new: true }
+    )
 }

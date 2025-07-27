@@ -7,8 +7,9 @@ export const registerSchema = {
         email: { type: 'string', format: 'email' },
         phone: { type: 'string' },
         password: { type: 'string', minLength: 6 },
+        role: { type: 'string' },
     },
-    additionalProperties: false,
+    additionalProperties: true,
 }
 
 export const registerResponseSchema = {

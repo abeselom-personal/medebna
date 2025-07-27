@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose"
+import swaggerJSDoc from "swagger-jsdoc"
 
 const UserSchema = new Schema({
     firstName: { type: String, required: true, trim: true },
@@ -23,5 +24,14 @@ const UserSchema = new Schema({
     roomIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Room' }],
     refreshToken: { type: String, select: false },
 }, { timestamps: true })
+
+UserSchema.set("toJSON", {
+    transform: (doc, ret) => {
+        delete ret.password
+        delete ret.refreshToken
+        delete ret.__v
+        return ret
+    }
+})
 
 export default mongoose.model("User", UserSchema)

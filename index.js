@@ -13,7 +13,6 @@ import swaggerConfig from './config/swagger.js'
 import initDatabase from './initDatabase.js'
 import logger from './utils/logger.js'
 import seedAdminUser from './scripts/seedAdmin.js'
-import { seed } from './scripts/seed.js'
 import routes from './routes/index.js'
 import { errorHandler } from './middleware/error.js'
 
@@ -30,9 +29,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-initDatabase()
 seedAdminUser()
-await seed()
+initDatabase()
+
 app.get('/', (_, res) => res.send('OK'))
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))

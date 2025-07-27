@@ -11,7 +11,6 @@ const router = express.Router()
  *   name: Business
  *   description: Business onboarding and management
  */
-
 router.use(verifyJWT)
 
 /**
