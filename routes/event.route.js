@@ -369,7 +369,11 @@ router.post(
     '/',
     verifyJWT,
     checkRole(['vendor', 'admin']),
-    upload.array('images', 10),
+    upload.fields([
+        { name: 'images', maxCount: 10 },
+        { name: 'performers[]', maxCount: 20 }, // For performer images
+        { name: 'sponsors[]', maxCount: 20 }     // For sponsor logos
+    ]),
     eventController.createEvent
 )
 

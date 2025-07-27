@@ -26,7 +26,7 @@ export const createEvent = async (req, res, next) => {
             sponsors: [],
             amenities: []
         };
-
+        console.log(data)
         // Process tickets
         if (parsedBody['tickets[0].title']) {
             let ticketIndex = 0;
@@ -60,14 +60,21 @@ export const createEvent = async (req, res, next) => {
             }
         }
 
+        // Add this before processing performers/sponsors
+        const performerImages = req.files?.filter(f => f.fieldname.startsWith('performers['));
+        const sponsorLogos = req.files?.filter(f => f.fieldname.startsWith('sponsors['));
+
         // Process performers
         if (parsedBody['performers[0].name']) {
             let performerIndex = 0;
             while (parsedBody[`performers[${performerIndex}].name`]) {
+                const matched = performerImages.find(f => f.fieldname === `performers[${performerIndex}].image`);
+                const processed = matched ? await processImages([matched], process.env.BASE_URL) : [];
+
                 data.performers.push({
                     name: parsedBody[`performers[${performerIndex}].name`],
                     role: parsedBody[`performers[${performerIndex}].role`] || '',
-                    image: parsedBody[`performers[${performerIndex}].image`] || ''
+                    image: processed[0]?.url || ''
                 });
                 performerIndex++;
             }
@@ -77,9 +84,12 @@ export const createEvent = async (req, res, next) => {
         if (parsedBody['sponsors[0].name']) {
             let sponsorIndex = 0;
             while (parsedBody[`sponsors[${sponsorIndex}].name`]) {
+                const matched = sponsorLogos.find(f => f.fieldname === `sponsors[${sponsorIndex}].logo`);
+                const processed = matched ? await processImages([matched], process.env.BASE_URL) : [];
+
                 data.sponsors.push({
                     name: parsedBody[`sponsors[${sponsorIndex}].name`],
-                    logo: parsedBody[`sponsors[${sponsorIndex}].logo`] || '',
+                    logo: processed[0]?.url || '',
                     website: parsedBody[`sponsors[${sponsorIndex}].website`] || ''
                 });
                 sponsorIndex++;
@@ -104,7 +114,6 @@ export const createEvent = async (req, res, next) => {
         if (req.files?.length) {
             eventData.images = await processImages(req.files, process.env.BASE_URL);
         }
-
         // Create event
         const event = await eventService.createEvent(eventData);
 

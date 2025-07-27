@@ -108,14 +108,14 @@ export const updateStep = async (businessId, step, data, toDelete = []) => {
                 }
             };
             break;
-        case 'rooms':
-            if (!data?.rooms?.length) break
-            const roomsWithBusiness = data.rooms.map(room => ({
-                ...room,
-                businessId: business._id
-            }))
-            rooms = await roomService.createMultipleRooms(roomsWithBusiness)
-            break
+        // case 'rooms':
+        //     if (!data?.rooms?.length) break
+        //     const roomsWithBusiness = data.rooms.map(room => ({
+        //         ...room,
+        //         businessId: business._id
+        //     }))
+        //     rooms = await roomService.createMultipleRooms(roomsWithBusiness)
+        //     break
 
         default:
             throw new Error('Invalid step')

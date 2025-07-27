@@ -6,7 +6,6 @@ const StepFlags = {
     contacts: { type: Boolean, default: false },
     amenities: { type: Boolean, default: false },
     images: { type: Boolean, default: false },
-    rooms: { type: Boolean, default: false },
     legal: { type: Boolean, default: false },
     paymentSettings: { type: Boolean, default: false },
 }

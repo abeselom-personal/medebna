@@ -43,3 +43,13 @@ export const deleteImages = async (imageUrls, baseUrl) => {
         }
     }))
 }
+
+export const processArrayImages = async (files, fieldName, baseUrl) => {
+    if (!files || !files.length) return [];
+
+    const filteredFiles = files.filter(f => f.fieldname === fieldName);
+    if (!filteredFiles.length) return null;
+
+    const processed = await processImages(filteredFiles, baseUrl);
+    return processed[0]?.url || '';
+};

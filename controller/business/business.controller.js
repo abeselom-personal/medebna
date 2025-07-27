@@ -70,22 +70,22 @@ export const updateStep = async (req, res, next) => {
             data.images = processed;
         }
 
-        if (step === 'rooms') {
-            if (typeof data.rooms === 'string') {
-                data.rooms = JSON.parse(data.rooms);
-            }
-
-            if (images.length) {
-                processed = await processImages(images, process.env.BASE_URL);
-            }
-
-            if (Array.isArray(data.rooms)) {
-                data.rooms = data.rooms.map(room => ({
-                    ...room,
-                    images: processed
-                }));
-            }
-        }
+        // if (step === 'rooms') {
+        //     if (typeof data.rooms === 'string') {
+        //         data.rooms = JSON.parse(data.rooms);
+        //     }
+        //
+        //     if (images.length) {
+        //         processed = await processImages(images, process.env.BASE_URL);
+        //     }
+        //
+        //     if (Array.isArray(data.rooms)) {
+        //         data.rooms = data.rooms.map(room => ({
+        //             ...room,
+        //             images: processed
+        //         }));
+        //     }
+        // }
 
         if (step === 'legal' && docs.length) {
             const uploadedDocs = docs.map(f => `${process.env.BASE_URL}/${f.path}`);

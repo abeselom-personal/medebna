@@ -4,6 +4,7 @@ export const createEvent = async (payload) => {
     return await Event.create(payload)
 }
 
+
 export const getEventById = async (id) => {
     return await Event.findById(id)
         .populate('businessId createdBy')
