@@ -6,7 +6,7 @@ export const register = async ({ email, password, firstName, lastName, phone, ro
     const hashed = await bcrypt.hash(password, 10)
     const user = await userService.createUser({ email, password: hashed, firstName, lastName, phone, role })
 
-    const tokens = generateTokens(user._id)
+    const tokens = generateTokens(user._id, user.role)
     await userService.setRefreshToken(user._id, tokens.refreshToken)
 
     return {
@@ -20,7 +20,7 @@ export const login = async ({ email, password }) => {
     const user = await userService.findUserByEmail(email)
     if (!user || !(await bcrypt.compare(password, user.password))) throw new Error('Invalid credentials')
 
-    const tokens = generateTokens(user._id)
+    const tokens = generateTokens(user._id, user.role)
     await userService.setRefreshToken(user._id, tokens.refreshToken)
 
     return {
@@ -40,7 +40,7 @@ export const refresh = async (token) => {
     const user = await userService.findUserById(payload.id)
     if (!user || user.refreshToken !== token) throw new Error('Invalid refresh token')
 
-    const tokens = generateTokens(user._id)
+    const tokens = generateTokens(user._id, user.role)
     await userService.setRefreshToken(user._id, tokens.refreshToken)
 
     return tokens
