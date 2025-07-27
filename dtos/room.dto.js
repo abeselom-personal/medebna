@@ -1,12 +1,35 @@
 // dto/room.dto.js
+
 export const roomCreateDto = (body, userId) => {
-    const { title, description, images, price, location, availability, businessId, maxCapacity } = body;
-    return { title, description, images, price, location, availability, createdBy: userId, businessId, maxCapacity };
+    const {
+        title, description, images, price, location, availability,
+        businessId, maxCapacity, numberOfAdults, numberOfChildren,
+        floorLevel
+    } = body;
+
+    return {
+        title,
+        description,
+        images,
+        price,
+        location,
+        availability,
+        createdBy: userId,
+        businessId,
+        maxCapacity,
+        numberOfAdults,
+        numberOfChildren,
+        floorLevel
+    };
 };
 
 export const roomUpdateDto = (body) => {
     const allowed = {};
-    ['title', 'description', 'images', 'price', 'location', 'availability', 'maxCapacity'].forEach(f => {
+    [
+        'title', 'description', 'images', 'price', 'location',
+        'availability', 'maxCapacity', 'currentCapacity',
+        'numberOfAdults', 'numberOfChildren', 'floorLevel'
+    ].forEach(f => {
         if (body[f] !== undefined) allowed[f] = body[f];
     });
     return allowed;
@@ -33,9 +56,13 @@ export const roomResponseDto = (room) => ({
     businessId: room.businessId?.toString?.() || '',
     maxCapacity: room.maxCapacity || null,
     currentCapacity: room.currentCapacity || 0,
+    numberOfAdults: room.numberOfAdults || 0,
+    numberOfChildren: room.numberOfChildren || 0,
+    floorLevel: room.floorLevel || [],
     createdAt: room.createdAt || null,
     updatedAt: room.updatedAt || null,
+    discounts: room.discounts || null,
     favoritesCount: room.favoritesCount || 0,
     business: room.business || null,
     isFavorite: !!room.isFavorite
-})
+});

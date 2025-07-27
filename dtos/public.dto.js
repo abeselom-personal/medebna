@@ -1,3 +1,4 @@
+import { disconnect } from "mongoose"
 
 export const RoomDTO = (room) => ({
     id: room._id,
@@ -6,6 +7,7 @@ export const RoomDTO = (room) => ({
     images: room.images,
     price: room.price,
     location: room.location,
+    discounts: room.discounts,
     availability: room.availability,
     createdAt: room.createdAt,
     updatedAt: room.updatedAt,

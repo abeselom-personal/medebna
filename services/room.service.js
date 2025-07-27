@@ -10,8 +10,10 @@ export const createRoom = async (data) => {
     await room.save()
 
     if (discounts) {
+        console.log("discounts")
+        console.log(discounts)
         const discountDocs = await DiscountService.createDiscountRulesForTarget(room._id, 'Room', discounts)
-        room.discounts = discountDocs.map(d => d._id)
+        room.discounts = discountDocs
         await room.save()
     }
 
@@ -87,7 +89,9 @@ export const getRoomById = async (id) => {
 }
 
 export const updateRoom = async (id, updates) => {
+
     const room = await Room.findByIdAndUpdate(id, updates, { new: true })
+
     if (!room) throw new Error('Room not found')
     return room
 }

@@ -59,6 +59,7 @@ export const listRooms = async (req, res, next) => {
 export const updateRoom = async (req, res, next) => {
     try {
         const data = roomUpdateDto(req.body);
+        console.log(data)
         const room = await roomService.updateRoom(req.params.id, data);
         res.json(roomResponseDto(room));
     } catch (err) {

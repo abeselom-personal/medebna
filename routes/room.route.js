@@ -14,7 +14,6 @@ router.use(verifyJWT);
  *   name: Room
  *   description: Room management
  */
-
 /**
  * @swagger
  * /api/room:
@@ -142,7 +141,7 @@ router.get('/:id', validateIdParam, roomController.getRoom);
  *             schema:
  *               $ref: '#/components/schemas/RoomResponse'
  */
-router.patch('/:id', validateIdParam, roomController.updateRoom);
+router.put('/:id', upload.array('images', 10), validateIdParam, roomController.updateRoom);
 
 /**
  * @swagger
