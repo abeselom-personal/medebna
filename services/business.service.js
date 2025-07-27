@@ -2,7 +2,6 @@
 import Business from '../model/business/business.model.js'
 import Events from '../model/event/event.model.js'
 import Rooms from '../model/room/room.model.js'
-import * as roomService from './room.service.js'
 import * as paymentService from './payment.service.js'
 import { calculateProgress } from '../utils/progress.util.js'
 
@@ -88,8 +87,8 @@ export const updateStep = async (businessId, step, data, toDelete = []) => {
                 account_name: data.subAccount.account_name,
                 bank_code: data.subAccount.bank_code,
                 account_number: data.subAccount.account_number,
-                split_value: data.subAccount.split_value,
-                split_type: data.subAccount.split_type
+                split_value: 0.10,
+                split_type: "percentage"
             });
             if (chapaSubaccountId == null) {
                 break
@@ -108,22 +107,14 @@ export const updateStep = async (businessId, step, data, toDelete = []) => {
                 }
             };
             break;
-        // case 'rooms':
-        //     if (!data?.rooms?.length) break
-        //     const roomsWithBusiness = data.rooms.map(room => ({
-        //         ...room,
-        //         businessId: business._id
-        //     }))
-        //     rooms = await roomService.createMultipleRooms(roomsWithBusiness)
-        //     break
-
         default:
             throw new Error('Invalid step')
     }
 
     business.stepsCompleted[step] = true
     await business.save()
-    return step === 'rooms' ? { business, rooms } : { business }
+    return { business }
+
 }
 
 export const publishBusiness = async (businessId) => {

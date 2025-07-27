@@ -4,7 +4,7 @@ export const roomCreateDto = (body, userId) => {
     const {
         title, description, images, price, location, availability,
         businessId, maxCapacity, numberOfAdults, numberOfChildren,
-        floorLevel
+        floorLevel, discounts
     } = body;
 
     return {
@@ -19,6 +19,7 @@ export const roomCreateDto = (body, userId) => {
         maxCapacity,
         numberOfAdults,
         numberOfChildren,
+        discounts,
         floorLevel
     };
 };
@@ -28,7 +29,7 @@ export const roomUpdateDto = (body) => {
     [
         'title', 'description', 'images', 'price', 'location',
         'availability', 'maxCapacity', 'currentCapacity',
-        'numberOfAdults', 'numberOfChildren', 'floorLevel'
+        'numberOfAdults', 'numberOfChildren', 'floorLevel', 'discounts'
     ].forEach(f => {
         if (body[f] !== undefined) allowed[f] = body[f];
     });

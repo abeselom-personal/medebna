@@ -140,8 +140,17 @@ export const createSubaccount = async ({
     bank_code,
     account_number,
     split_value = 0.2,
-    split_type = 'percentage'
+    split_type = 'percentage',
 }) => {
+    const existing = await Business.findOne({
+        'paymentSettings.subAccount.account_number': account_number,
+        'paymentSettings.subAccount.bank_code': bank_code
+    })
+
+    if (existing?.paymentSettings?.subAccount?.id) {
+        return existing.paymentSettings.subAccount.id
+    }
+
     const payload = {
         business_name,
         account_name,
@@ -149,21 +158,31 @@ export const createSubaccount = async ({
         account_number,
         split_value,
         split_type
-    };
+    }
 
     const headers = {
         Authorization: `Bearer ${config.chapa.secretKey}`,
         'Content-Type': 'application/json'
-    };
+    }
 
     try {
-        const response = await axios.post('https://api.chapa.co/v1/subaccount', payload, { headers });
-        return response.data.data.subaccount_id;
+        const res = await axios.post('https://api.chapa.co/v1/subaccount', payload, { headers })
+        return res.data.data.subaccount_id
     } catch (err) {
-        console.error(err.response?.data || err.message);
-        throw err;
+        if (err.response?.data?.message?.includes('This subaccount does exist')) {
+            const found = await Business.findOne({
+                'paymentSettings.subAccount.account_number': account_number,
+                'paymentSettings.subAccount.bank_code': bank_code
+            })
+            if (found?.paymentSettings?.subAccount?.id) {
+                return found.paymentSettings.subAccount.id
+            }
+            // fallback: return null or handle as needed
+            return null
+        }
+        throw new Error(err.response?.data?.message || 'Failed to create subaccount')
     }
-};
+}
 
 export const deleteSubaccount = async (id) => {
     const headers = {
@@ -178,17 +197,3 @@ export const deleteSubaccount = async (id) => {
     }
 };
 
-export const getSubaccounts = async () => {
-    const headers = {
-        Authorization: `Bearer ${config.chapa.secretKey}`,
-        'Content-Type': 'application/json'
-    };
-    try {
-        const response = await axios.delete(`https://api.chapa.co/v1/subaccount`, { headers });
-        console.log(response)
-        return response.data
-    }
-    catch (error) {
-        return null
-    }
-};

@@ -6,7 +6,6 @@ const bookingSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     guest: { type: mongoose.Schema.Types.ObjectId, ref: 'Guest' },
 
-    // Add capacity info
     adults: { type: Number, min: 1, default: 1 },
     children: { type: Number, min: 0, default: 0 },
 
@@ -14,6 +13,8 @@ const bookingSchema = new mongoose.Schema({
     checkOut: Date,
     eventDate: Date,
 
+    discountPercent: { type: Number, default: 0 },
+    appliedDiscount: { type: mongoose.Schema.Types.ObjectId, ref: 'DiscountRule', default: null },
     status: {
         type: String,
         enum: ['Pending', 'Confirmed', 'Cancelled'],

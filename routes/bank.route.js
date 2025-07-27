@@ -1,6 +1,6 @@
 // routes/bank.route.js
 import express from 'express'
-import { getBanks, deleteSubaccount, getSubaccount } from '../controller/bank/bank.controller.js'
+import { getBanks, deleteSubaccount } from '../controller/bank/bank.controller.js'
 
 const router = express.Router()
 
@@ -54,6 +54,5 @@ router.get('/', getBanks)
 
 router.delete('/:id', deleteSubaccount)
 
-router.get('/subaccounts', getSubaccount)
 
 export default router

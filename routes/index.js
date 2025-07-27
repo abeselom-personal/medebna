@@ -98,8 +98,8 @@ router.use('/bank', bankRouter)
 /**
  * @swagger
  * tags:
- *   - name: Banks
- *     description: Banks reports
+ *   - name: Discount
+ *     description: discount controll
  */
 router.use('/discount', discountRouter)
 

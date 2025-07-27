@@ -1,13 +1,65 @@
+import DiscountRule from '../model/discount/discountRule.model.js'
 import Booking from '../model/booking/booking.model.js'
 import Payment from '../model/payment/payment.model.js'
 import Guest from '../model/guest/guest.model.js'
+import Room from '../model/room/room.model.js'
+import mongoose from 'mongoose'
 
+const applyDiscount = async (itemId, kind, checkIn, checkOut) => {
+    const now = new Date()
+    const discounts = await DiscountRule.find({
+        target: itemId,
+        targetType: kind,
+        enabled: true,
+        validFrom: { $lte: now },
+        validTo: { $gte: now }
+    })
+
+    if (!discounts.length) return { discount: 0, discountId: null }
+
+    const stayDays = kind === 'Room' ? Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)) : 0
+
+    for (const d of discounts) {
+        const valid = d.conditions.every(c => {
+            if (c.key === 'daysBooked') {
+                switch (c.operator) {
+                    case '>=': return stayDays >= c.value
+                    case '<=': return stayDays <= c.value
+                    case '==': return stayDays === c.value
+                    case '>': return stayDays > c.value
+                    case '<': return stayDays < c.value
+                    default: return false
+                }
+            }
+            return true
+        })
+        if (valid) return { discount: d.discountPercent, discountId: d._id }
+    }
+
+    return { discount: 0, discountId: null }
+}
+
+const validateAndBookRoom = async (roomId, checkIn, checkOut) => {
+    const room = await Room.findById(roomId)
+    if (!room) throw new Error('Room not found')
+
+    const now = new Date()
+    if (checkIn < now || checkOut <= checkIn) throw new Error('Invalid booking dates')
+    if (checkIn < room.availability.from || checkOut > room.availability.to) throw new Error('Room not available')
+    if (room.currentCapacity >= room.maxCapacity) throw new Error('Room is fully booked')
+
+    room.currentCapacity += 1
+    await room.save()
+    return room
+}
 
 export const createBookingService = async ({ item, kind, checkIn, checkOut, guest, userId }) => {
     let guestDoc = null
-    if (!userId && guest) {
-        guestDoc = await Guest.create(guest)
-    }
+    if (!userId && guest) guestDoc = await Guest.create(guest)
+
+    if (kind === 'Room') await validateAndBookRoom(item, checkIn, checkOut)
+
+    const { discount, discountId } = await applyDiscount(item, kind, checkIn, checkOut)
 
     const booking = await Booking.create({
         item,
@@ -18,11 +70,12 @@ export const createBookingService = async ({ item, kind, checkIn, checkOut, gues
         checkOut: kind === 'Room' ? checkOut : undefined,
         eventDate: kind === 'Event' ? checkIn : undefined,
         status: 'Pending',
+        discountPercent: discount,
+        appliedDiscount: discountId ? new mongoose.Types.ObjectId(discountId) : null
     })
 
     return booking
 }
-
 export const getBookingsService = async () => {
     const bookings = await Booking.find().populate('guest')
 

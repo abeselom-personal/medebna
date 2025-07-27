@@ -143,6 +143,7 @@ router.get('/:id', validateIdParam, roomController.getRoom);
  */
 router.put('/:id', upload.array('images', 10), validateIdParam, roomController.updateRoom);
 
+router.put('/:id/availability', roomController.updateRoomAvailability);
 /**
  * @swagger
  * /api/room/{id}:

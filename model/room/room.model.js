@@ -43,7 +43,6 @@ const roomSchema = new mongoose.Schema({
         from: { type: Date, required: true },
         to: {
             type: Date,
-            required: true,
             validate: {
                 validator: function(value) {
                     return !this.from || value > this.from
@@ -77,4 +76,22 @@ roomSchema.pre('save', function(next) {
         next()
     }
 })
+
+roomSchema.statics.checkAvailabilityAndIncrement = async function(roomId) {
+    const room = await this.findOne({ _id: roomId })
+
+    if (!room) throw new Error('Room not found')
+
+    const now = new Date()
+    if (room.availability.from > now || room.availability.to < now)
+        throw new Error('Room is not available')
+
+    if (room.currentCapacity >= room.maxCapacity)
+        throw new Error('Room is full')
+
+    room.currentCapacity += 1
+    await room.save()
+
+    return room
+}
 export default mongoose.model('Room', roomSchema)

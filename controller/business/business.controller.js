@@ -96,7 +96,7 @@ export const updateStep = async (req, res, next) => {
 
         // Handle deletions after processing new files
         if (toDelete.length > 0) {
-            deletedUrls = await deleteImages(
+            await deleteImages(
                 toDelete,
                 process.env.BASE_URL,
                 ownerId,
@@ -118,7 +118,6 @@ export const updateStep = async (req, res, next) => {
             ...(result.rooms && { rooms: result.rooms })
         });
     } catch (error) {
-        console.error('Error in updateStep:', error);
         next(error);
     }
 };

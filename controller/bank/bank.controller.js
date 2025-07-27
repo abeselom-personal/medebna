@@ -21,14 +21,3 @@ export const deleteSubaccount = async (req, res, next) => {
     }
 }
 
-export const getSubaccount = async (req, res, next) => {
-    try {
-
-        const data = await paymentService.getSubaccounts()
-        console.log(data)
-        res.json({ success: true, data })
-    } catch (err) {
-        next(err)
-    }
-}
-

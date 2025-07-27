@@ -67,6 +67,17 @@ export const updateRoom = async (req, res, next) => {
     }
 };
 
+export const updateRoomAvailability = async (req, res, next) => {
+    try {
+        const { type } = req.query;
+        const delta = type === 'decriment' ? -1 : 1;
+        const room = await roomService.updateRoomAvailability(req.params.id, delta);
+        res.json(roomResponseDto(room));
+    } catch (err) {
+        next(err);
+    }
+};
+
 export const deleteRoom = async (req, res, next) => {
     try {
         await roomService.deleteRoom(req.params.id);

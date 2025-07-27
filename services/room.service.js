@@ -96,6 +96,21 @@ export const updateRoom = async (id, updates) => {
     return room
 }
 
+export const updateRoomAvailability = async (id, delta) => {
+    const room = await Room.findById(id);
+    if (!room) throw new Error('Room not found');
+
+    const increment = Number(delta);
+    if (isNaN(increment)) throw new Error('Invalid increment value');
+
+    const newCapacity = room.currentCapacity + increment;
+    if (newCapacity < 0 || newCapacity > room.maxCapacity) return room;
+
+    room.currentCapacity = newCapacity;
+    await room.save();
+    return room;
+};
+
 export const deleteRoom = async (id) => {
     const room = await Room.findByIdAndDelete(id)
     if (!room) throw new Error('Room not found or already deleted')
