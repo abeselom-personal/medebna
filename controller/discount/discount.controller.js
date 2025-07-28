@@ -56,3 +56,13 @@ export const getDiscounts = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+
+export const getDiscountCalculation = async (req, res) => {
+    try {
+        const discounts = await discountService.getDiscounts();
+        res.status(200).json({ message: 'Room discounts retrieved', data: discounts });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+

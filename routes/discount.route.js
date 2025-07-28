@@ -11,6 +11,8 @@ router.post('/', roomDiscountController.createDiscountRule);
 
 router.get('/', roomDiscountController.getDiscounts);
 
+router.get('/calculate', roomDiscountController.getDiscountCalculation);
+
 router.get('/:roomId/discounts', roomDiscountController.getRoomDiscounts);
 
 
