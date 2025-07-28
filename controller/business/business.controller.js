@@ -51,7 +51,6 @@ export const deleteBusiness = async (req, res, next) => {
 }
 
 export const updateStep = async (req, res, next) => {
-
     try {
         const step = req.params.step;
         const businessId = req.params.id;
@@ -59,9 +58,7 @@ export const updateStep = async (req, res, next) => {
         const ownerId = req.user.id;
         let processed = [];
 
-        // Extract images to delete (case-insensitive check)
         const toDelete = [].concat(req.body.toDelete || req.body.ToDelete || []);
-        // Process new images first
         const images = req.files?.images || [];
         const docs = req.files?.additionalDocs || [];
 
@@ -70,23 +67,6 @@ export const updateStep = async (req, res, next) => {
             data.images = processed;
         }
 
-        // if (step === 'rooms') {
-        //     if (typeof data.rooms === 'string') {
-        //         data.rooms = JSON.parse(data.rooms);
-        //     }
-        //
-        //     if (images.length) {
-        //         processed = await processImages(images, process.env.BASE_URL);
-        //     }
-        //
-        //     if (Array.isArray(data.rooms)) {
-        //         data.rooms = data.rooms.map(room => ({
-        //             ...room,
-        //             images: processed
-        //         }));
-        //     }
-        // }
-
         if (step === 'legal' && docs.length) {
             const uploadedDocs = docs.map(f => `${process.env.BASE_URL}/${f.path}`);
             data.additionalDocs = Array.isArray(data.additionalDocs)
@@ -94,7 +74,6 @@ export const updateStep = async (req, res, next) => {
                 : uploadedDocs;
         }
 
-        // Handle deletions after processing new files
         if (toDelete.length > 0) {
             await deleteImages(
                 toDelete,
@@ -105,7 +84,6 @@ export const updateStep = async (req, res, next) => {
             );
         }
 
-        // Update step with both new data and deletions
         const result = await businessService.updateStep(
             businessId,
             step,

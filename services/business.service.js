@@ -33,8 +33,6 @@ export const deleteBusiness = async (id, ownerId) => {
 export const updateStep = async (businessId, step, data, toDelete = []) => {
     const business = await Business.findById(businessId)
     if (!business) throw new Error('Business not found')
-
-    let rooms = []
     if (toDelete.length > 0) {
         if (step === 'legal') {
             business.legal.additionalDocs = business.legal.additionalDocs?.filter(
@@ -111,6 +109,7 @@ export const updateStep = async (businessId, step, data, toDelete = []) => {
             throw new Error('Invalid step')
     }
 
+    business.progress = calculateProgress(business.stepsCompleted)
     business.stepsCompleted[step] = true
     await business.save()
     return { business }

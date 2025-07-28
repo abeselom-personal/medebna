@@ -19,20 +19,27 @@ export const createMultipleRooms = async (rooms, createdBy) => {
     return Room.insertMany(prepared)
 }
 
+
 const addFavoritesAndDiscountAggregation = (userId = null, type = "Room") => {
-    const match = [
-        { $eq: ['$item', '$$roomId'] },
-        { $eq: ['$kind', 'Room'] }
-    ]
-    if (userId) match.push({ $eq: ['$user', new mongoose.Types.ObjectId(userId)] })
 
     return [
+        // Favorites lookup
         {
             $lookup: {
                 from: 'favorites',
-                let: { roomId: '$_id' },
+                let: { itemId: '$_id' },
                 pipeline: [
-                    { $match: { $expr: { $and: match } } }
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ['$item', '$$itemId'] },
+                                    { $eq: ['$kind', type] },
+                                    ...(userId ? [{ $eq: ['$user', new mongoose.Types.ObjectId(userId)] }] : [])
+                                ]
+                            }
+                        }
+                    }
                 ],
                 as: 'favorites'
             }
@@ -43,6 +50,7 @@ const addFavoritesAndDiscountAggregation = (userId = null, type = "Room") => {
                 isFavorite: { $gt: [{ $size: '$favorites' }, 0] }
             }
         },
+        // Discounts lookup with proper type conversion and date filtering
         {
             $lookup: {
                 from: 'discountrules',
@@ -94,9 +102,18 @@ const addFavoritesAndDiscountAggregation = (userId = null, type = "Room") => {
                 as: 'discounts'
             }
         },
-    ]
-}
-
+        // Business information
+        {
+            $lookup: {
+                from: 'businesses',
+                localField: 'businessId',
+                foreignField: '_id',
+                as: 'business'
+            }
+        },
+        { $unwind: { path: '$business', preserveNullAndEmptyArrays: true } }
+    ];
+};
 export const getAllRooms = async (filter = {}, limit = 100, skip = 0) => {
     return Room.aggregate([
         { $match: filter },
@@ -110,38 +127,7 @@ export const getAllRooms = async (filter = {}, limit = 100, skip = 0) => {
 export const getRoomById = async (id, userId = null) => {
     const result = await Room.aggregate([
         { $match: { _id: new mongoose.Types.ObjectId(id) } },
-        ...DiscountService.addFavoritesAggregation(userId),
-        {
-            $lookup: {
-                from: 'discountrules',
-                let: { roomId: '$_id' },
-                pipeline: [
-                    {
-                        $match: {
-                            $expr: {
-                                $and: [
-                                    { $eq: ['$target', '$$roomId'] },
-                                    { $eq: ['$targetType', 'Room'] },
-                                    { $eq: ['$enabled', true] },
-                                    { $lte: ['$validFrom', new Date()] },
-                                    { $gte: ['$validTo', new Date()] }
-                                ]
-                            }
-                        }
-                    }
-                ],
-                as: 'discounts'
-            }
-        },
-        {
-            $lookup: {
-                from: 'businesses',
-                localField: 'businessId',
-                foreignField: '_id',
-                as: 'business'
-            }
-        },
-        { $unwind: { path: '$business', preserveNullAndEmptyArrays: true } }
+        ...addFavoritesAndDiscountAggregation(userId),
     ]);
 
     if (!result.length) throw new Error('Room not found');
