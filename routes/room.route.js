@@ -71,7 +71,7 @@ router.post('/bulk', roomController.createMultipleRooms);
 
 /**
  * @swagger
- * /api/room:
+ * /api/rooms:
  *   get:
  *     summary: Get all rooms for the authenticated user
  *     tags: [Room]

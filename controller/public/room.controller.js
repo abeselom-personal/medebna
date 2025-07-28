@@ -8,6 +8,7 @@ export const getAllRooms = async (req, res) => {
     const page = +req.query.page || 1
     const limit = +req.query.limit || 10
     const [rooms, total] = await getAllRoomsService({ page, limit })
+    console.log(rooms)
     res.status(200).json(PaginatedDTO(rooms.map(roomResponseDto), page, limit, total))
 }
 

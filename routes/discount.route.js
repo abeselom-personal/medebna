@@ -7,13 +7,14 @@ router.post('/:roomId/discounts/:discountId', roomDiscountController.addDiscount
 
 router.delete('/:roomId/discounts/:discountId', roomDiscountController.removeDiscount);
 
+router.get('/:roomId/discounts', roomDiscountController.getRoomDiscounts);
+
 router.post('/', roomDiscountController.createDiscountRule);
 
 router.get('/', roomDiscountController.getDiscounts);
 
 router.get('/calculate', roomDiscountController.getDiscountCalculation);
 
-router.get('/:roomId/discounts', roomDiscountController.getRoomDiscounts);
 
 
 export default router;

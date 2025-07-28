@@ -62,7 +62,7 @@ export const roomResponseDto = (room) => ({
     floorLevel: room.floorLevel || [],
     createdAt: room.createdAt || null,
     updatedAt: room.updatedAt || null,
-    discounts: room.discounts || null,
+    discounts: room.discounts || [],
     favoritesCount: room.favoritesCount || 0,
     business: room.business || null,
     isFavorite: !!room.isFavorite

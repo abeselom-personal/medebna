@@ -50,6 +50,7 @@ export const getRoom = async (req, res, next) => {
 export const listRooms = async (req, res, next) => {
     try {
         const rooms = await roomService.getRoomsByUser(req.user.id);
+        console.log(rooms)
         res.json(rooms.map(roomResponseDto));
     } catch (err) {
         next(err);

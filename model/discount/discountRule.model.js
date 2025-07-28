@@ -1,3 +1,4 @@
+// models/DiscountRule.ts
 import mongoose from 'mongoose'
 
 const discountRuleSchema = new mongoose.Schema({
@@ -6,9 +7,7 @@ const discountRuleSchema = new mongoose.Schema({
         required: true,
         refPath: 'targetType',
         validate: {
-            validator: function(v) {
-                return mongoose.Types.ObjectId.isValid(v)
-            },
+            validator: v => mongoose.Types.ObjectId.isValid(v),
             message: props => `${props.value} is not a valid ObjectId`
         }
     },
@@ -19,7 +18,7 @@ const discountRuleSchema = new mongoose.Schema({
     },
     title: { type: String, required: true },
     conditions: [{
-        key: { type: String, required: true }, // e.g. 'adults', 'daysBooked', 'numberOfTickets'
+        key: { type: String, required: true },
         operator: { type: String, enum: ['>=', '<=', '==', '>', '<'], required: true },
         value: { type: mongoose.Schema.Types.Mixed, required: true }
     }],
@@ -29,5 +28,8 @@ const discountRuleSchema = new mongoose.Schema({
     validTo: { type: Date, required: true },
     enabled: { type: Boolean, default: true }
 }, { timestamps: true })
+
+discountRuleSchema.index({ target: 1, targetType: 1, enabled: 1 });
+discountRuleSchema.index({ validFrom: 1, validTo: 1 });
 
 export default mongoose.model('DiscountRule', discountRuleSchema)

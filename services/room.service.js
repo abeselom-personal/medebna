@@ -4,27 +4,22 @@ import * as DiscountService from './discount.service.js'
 import Room from '../model/room/room.model.js'
 
 export const createRoom = async (data) => {
-    const { discounts, ...roomData } = data
-    console.log(roomData)
-    const room = new Room(roomData)
-    await room.save()
+    const { discounts, ...roomData } = data;
+    const room = new Room(roomData);
+    await room.save();
 
-    if (discounts) {
-        console.log("discounts")
-        console.log(discounts)
-        const discountDocs = await DiscountService.createDiscountRulesForTarget(room._id, 'Room', discounts)
-        room.discounts = discountDocs
-        await room.save()
+    if (discounts && discounts.length) {
+        await DiscountService.createDiscountRulesForTarget(room._id, 'Room', discounts);
     }
 
-    return room
-}
+    return room;
+};
 export const createMultipleRooms = async (rooms, createdBy) => {
     const prepared = rooms.map(r => ({ ...r, createdBy }))
     return Room.insertMany(prepared)
 }
 
-const addFavoritesAggregation = (userId = null) => {
+const addFavoritesAndDiscountAggregation = (userId = null, type = "Room") => {
     const match = [
         { $eq: ['$item', '$$roomId'] },
         { $eq: ['$kind', 'Room'] }
@@ -37,11 +32,7 @@ const addFavoritesAggregation = (userId = null) => {
                 from: 'favorites',
                 let: { roomId: '$_id' },
                 pipeline: [
-                    {
-                        $match: {
-                            $expr: { $and: match }
-                        }
-                    }
+                    { $match: { $expr: { $and: match } } }
                 ],
                 as: 'favorites'
             }
@@ -51,7 +42,58 @@ const addFavoritesAggregation = (userId = null) => {
                 favoritesCount: { $size: '$favorites' },
                 isFavorite: { $gt: [{ $size: '$favorites' }, 0] }
             }
-        }
+        },
+        {
+            $lookup: {
+                from: 'discountrules',
+                let: { itemId: '$_id' },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ['$target', '$$itemId'] },
+                                    { $eq: ['$targetType', type] },
+                                    { $eq: ['$enabled', true] },
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        $addFields: {
+                            conditions: {
+                                $map: {
+                                    input: '$conditions',
+                                    as: 'condition',
+                                    in: {
+                                        key: '$$condition.key',
+                                        operator: '$$condition.operator',
+                                        value: {
+                                            $cond: {
+                                                if: { $eq: [{ $type: '$$condition.value' }, 'string'] },
+                                                then: { $toDouble: '$$condition.value' },
+                                                else: '$$condition.value'
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        $project: {
+                            title: 1,
+                            discountPercent: 1,
+                            maxDiscount: 1,
+                            conditions: 1,
+                            validFrom: 1,
+                            validTo: 1
+                        }
+                    }
+                ],
+                as: 'discounts'
+            }
+        },
     ]
 }
 
@@ -61,15 +103,37 @@ export const getAllRooms = async (filter = {}, limit = 100, skip = 0) => {
         { $sort: { createdAt: -1 } },
         { $skip: skip },
         { $limit: limit },
-        ...addFavoritesAggregation()
+        ...addFavoritesAndDiscountAggregation()
     ])
 }
 
-export const getRoomById = async (id) => {
+export const getRoomById = async (id, userId = null) => {
     const result = await Room.aggregate([
         { $match: { _id: new mongoose.Types.ObjectId(id) } },
-        ...addFavoritesAggregation()
-        , {
+        ...DiscountService.addFavoritesAggregation(userId),
+        {
+            $lookup: {
+                from: 'discountrules',
+                let: { roomId: '$_id' },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ['$target', '$$roomId'] },
+                                    { $eq: ['$targetType', 'Room'] },
+                                    { $eq: ['$enabled', true] },
+                                    { $lte: ['$validFrom', new Date()] },
+                                    { $gte: ['$validTo', new Date()] }
+                                ]
+                            }
+                        }
+                    }
+                ],
+                as: 'discounts'
+            }
+        },
+        {
             $lookup: {
                 from: 'businesses',
                 localField: 'businessId',
@@ -77,17 +141,12 @@ export const getRoomById = async (id) => {
                 as: 'business'
             }
         },
-        {
-            $unwind: {
-                path: '$business',
-                preserveNullAndEmptyArrays: true
-            }
-        }
-    ])
-    if (!result.length) throw new Error('Room not found')
-    return result[0]
-}
+        { $unwind: { path: '$business', preserveNullAndEmptyArrays: true } }
+    ]);
 
+    if (!result.length) throw new Error('Room not found');
+    return result[0];
+};
 export const updateRoom = async (id, updates) => {
 
     const room = await Room.findByIdAndUpdate(id, updates, { new: true })
@@ -121,7 +180,7 @@ export const getRoomsByUser = async (userId) => {
     return Room.aggregate([
         { $match: { createdBy: new mongoose.Types.ObjectId(userId) } },
         { $sort: { createdAt: -1 } },
-        ...addFavoritesAggregation(userId)
+        ...addFavoritesAndDiscountAggregation(userId)
     ])
 }
 
@@ -137,15 +196,19 @@ export const searchRooms = async (query = {}) => {
     return Room.aggregate([
         { $match: filter },
         { $sort: { createdAt: -1 } },
-        ...addFavoritesAggregation()
+        ...addFavoritesAndDiscountAggregation()
     ])
 }
 
 export const isRoomAvailable = async (roomId, from, to) => {
-    const room = await Room.findById(roomId)
-    if (!room) throw new Error('Room not found')
+    const room = await Room.findById(roomId);
+    if (!room) throw new Error('Room not found');
+
+    const checkIn = new Date(from);
+    const checkOut = new Date(to);
+
     return (
-        new Date(from) >= room.availability.from &&
-        new Date(to) <= room.availability.to
-    )
-}
+        checkIn >= room.availability.from &&
+        checkOut <= room.availability.to
+    );
+};

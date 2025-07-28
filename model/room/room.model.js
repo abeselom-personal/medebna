@@ -22,22 +22,6 @@ const roomSchema = new mongoose.Schema({
     },
     maxCapacity: { type: Number, required: true, min: 1 },
     currentCapacity: { type: Number, default: 0, min: 0 },
-    discountRules: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'DiscountRule'
-    }],
-    currentDiscounts: [{
-        discountId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'DiscountRule'
-        },
-        activeFrom: Date,
-        activeTo: Date,
-        isActive: {
-            type: Boolean,
-            default: true
-        }
-    }],
     location: { type: String, trim: true },
     availability: {
         from: { type: Date, required: true },
@@ -94,4 +78,22 @@ roomSchema.statics.checkAvailabilityAndIncrement = async function(roomId) {
 
     return room
 }
+
+roomSchema.virtual('discounts', {
+    ref: 'DiscountRule',
+    localField: '_id',
+    foreignField: 'target',
+    justOne: false,
+    options: {
+        match: {
+            targetType: 'Room',
+            enabled: true,
+            validFrom: { $lte: new Date() },
+            validTo: { $gte: new Date() }
+        }
+    }
+})
+
+roomSchema.set('toObject', { virtuals: true })
+roomSchema.set('toJSON', { virtuals: true })
 export default mongoose.model('Room', roomSchema)

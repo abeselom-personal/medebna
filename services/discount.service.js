@@ -1,51 +1,29 @@
-import DiscountRule from '../model/discount/discountRule.model.js'
-import Room from '../model/room/room.model.js'
+// services/discount.service.js
+import DiscountRule from '../model/discount/discountRule.model.js';
+import Room from '../model/room/room.model.js';
 
-export const addDiscountToRoom = async (roomId, discountId, activeFrom, activeTo) => {
-    const room = await Room.findById(roomId);
-    if (!room) throw new Error('Room not found');
+export const createDiscountRule = async (data) => {
+    const discount = new DiscountRule({
+        ...data,
+        enabled: data.enabled ?? true
+    });
+    return await discount.save();
+};
 
-    const discount = await DiscountRule.findById(discountId);
-    if (!discount) throw new Error('Discount rule not found');
+export const createDiscountRulesForTarget = async (targetId, targetType, discounts) => {
+    if (!Array.isArray(discounts) || discounts.length === 0) return [];
 
-    // Check if discount is already applied
-    const existingDiscount = room.currentDiscounts.find(d =>
-        d.discountId.equals(discountId) && d.isActive
+    const discountDocs = await DiscountRule.insertMany(
+        discounts.map(d => ({
+            ...d,
+            target: targetId,
+            targetType
+        }))
     );
-
-    if (existingDiscount) {
-        throw new Error('This discount is already active for this room');
-    }
-
-    room.discountRules.push(discountId);
-    room.currentDiscounts.push({
-        discountId,
-        activeFrom: activeFrom || new Date(),
-        activeTo: activeTo || discount.validTo,
-        isActive: true
-    });
-
-    return room.save();
+    return discountDocs;
 };
 
-export const removeDiscountFromRoom = async (roomId, discountId) => {
-    const room = await Room.findById(roomId);
-    if (!room) throw new Error('Room not found');
-
-    // Remove from discountRules array
-    room.discountRules = room.discountRules.filter(id => !id.equals(discountId));
-
-    // Mark as inactive in currentDiscounts
-    room.currentDiscounts = room.currentDiscounts.map(d => {
-        if (d.discountId.equals(discountId)) {
-            return { ...d.toObject(), isActive: false };
-        }
-        return d;
-    });
-
-    return room.save();
-};
-
+// Fixed getRoomDiscounts function
 export const getRoomDiscounts = async (roomId) => {
     const room = await Room.findById(roomId)
         .populate({
@@ -59,7 +37,6 @@ export const getRoomDiscounts = async (roomId) => {
 
     if (!room) throw new Error('Room not found');
 
-    // Filter active discounts within their validity period
     const now = new Date();
     const activeDiscounts = room.currentDiscounts.filter(d =>
         d.isActive &&
@@ -73,49 +50,42 @@ export const getRoomDiscounts = async (roomId) => {
     };
 };
 
-export const getDiscounts = async () => {
-    return await DiscountRule.find({ enabled: true });
+// Fixed discount calculation function
+export const calculateApplicableDiscount = async (itemId, kind, context) => {
+    const now = new Date();
+    const discounts = await DiscountRule.find({
+        target: itemId,
+        targetType: kind,
+        enabled: true,
+        validFrom: { $lte: now },
+        validTo: { $gte: now }
+    });
+
+    if (!discounts.length) return { discount: 0, discountId: null, discountName: null };
+
+    for (const discount of discounts) {
+        const valid = discount.conditions.every(condition => {
+            const value = context[condition.key];
+            if (value === undefined) return false;
+
+            switch (condition.operator) {
+                case '>=': return value >= condition.value;
+                case '<=': return value <= condition.value;
+                case '==': return value === condition.value;
+                case '>': return value > condition.value;
+                case '<': return value < condition.value;
+                default: return false;
+            }
+        });
+
+        if (valid) {
+            return {
+                discount: discount.discountPercent,
+                discountId: discount._id,
+                discountName: discount.title
+            };
+        }
+    }
+
+    return { discount: 0, discountId: null, discountName: null };
 };
-
-
-
-
-export const createDiscountRule = async (data) => {
-    const {
-        target,
-        targetType,
-        title,
-        conditions,
-        discountPercent,
-        maxDiscount,
-        validFrom,
-        validTo,
-        enabled
-    } = data
-
-    const discount = new DiscountRule({
-        target,
-        targetType,
-        title,
-        conditions,
-        discountPercent,
-        maxDiscount,
-        validFrom,
-        validTo,
-        enabled: enabled ?? true
-    })
-
-    return await discount.save()
-}
-export const createDiscountRulesForTarget = async (targetId, targetType, discounts) => {
-    if (!Array.isArray(discounts) || discounts.length === 0) return []
-
-    const discountDocs = await DiscountRule.insertMany(
-        discounts.map(d => ({
-            ...d,
-            target: targetId,
-            targetType
-        }))
-    )
-    return discountDocs
-}
