@@ -2,7 +2,7 @@
 
 export const roomCreateDto = (body, userId) => {
     const {
-        title, description, images, price, location, availability,
+        title, description, images, price, availability,
         businessId, maxCapacity, numberOfAdults, numberOfChildren,
         floorLevel, discounts
     } = body;
@@ -12,7 +12,6 @@ export const roomCreateDto = (body, userId) => {
         description,
         images,
         price,
-        location,
         availability,
         createdBy: userId,
         businessId,
@@ -27,7 +26,7 @@ export const roomCreateDto = (body, userId) => {
 export const roomUpdateDto = (body) => {
     const allowed = {};
     [
-        'title', 'description', 'images', 'price', 'location',
+        'title', 'description', 'images', 'price',
         'availability', 'businessId', 'maxCapacity', 'currentCapacity',
         'numberOfAdults', 'numberOfChildren', 'floorLevel', 'discounts'
     ].forEach(f => {
@@ -48,7 +47,6 @@ export const roomResponseDto = (room) => ({
         currency: p.currency || '',
         amount: p.amount || 0
     })) : [],
-    location: room.location || '',
     availability: {
         from: room.availability?.from || null,
         to: room.availability?.to || null

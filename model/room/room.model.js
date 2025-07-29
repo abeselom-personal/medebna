@@ -22,7 +22,6 @@ const roomSchema = new mongoose.Schema({
     },
     maxCapacity: { type: Number, required: true, min: 1 },
     currentCapacity: { type: Number, default: 0, min: 0 },
-    location: { type: String, trim: true },
     availability: {
         from: { type: Date, required: true },
         to: {
