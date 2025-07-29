@@ -27,9 +27,11 @@ const roomSchema = new mongoose.Schema({
         from: { type: Date, required: true },
         to: {
             type: Date,
+            required: false,
             validate: {
                 validator: function(value) {
-                    return !this.from || value > this.from
+                    if (!value) return true
+                    return value > this.from
                 },
                 message: 'to date must be after from date'
             }
