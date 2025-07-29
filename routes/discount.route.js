@@ -14,7 +14,7 @@ router.post('/', roomDiscountController.createDiscountRule);
 
 // router.get('/', roomDiscountController.getDiscounts);
 
-router.get('/calculate', [
+router.post('/calculate', [
     body('itemId').notEmpty().withMessage('Item ID is required'),
     body('checkIn').notEmpty().isISO8601().withMessage('Valid check-in date is required'),
     body('checkOut').notEmpty().isISO8601().withMessage('Valid check-out date is required'),
