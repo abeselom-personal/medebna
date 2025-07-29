@@ -24,17 +24,6 @@ const roomSchema = new mongoose.Schema({
     currentCapacity: { type: Number, default: 0, min: 0 },
     availability: {
         from: { type: Date, required: true },
-        to: {
-            type: Date,
-            required: false,
-            validate: {
-                validator: function(value) {
-                    if (!value) return true
-                    return value > this.from
-                },
-                message: 'to date must be after from date'
-            }
-        }
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
