@@ -21,6 +21,7 @@ const BusinessSchema = new mongoose.Schema({
         lng: Number
     },
     type: { type: String, enum: ['hotel', 'venue'], default: 'hotel', required: true },
+    rating: { type: Number, min: 1, max: 5 },
     contact: {
         phone: String,
         emails: [String]
@@ -30,6 +31,11 @@ const BusinessSchema = new mongoose.Schema({
         url: String,
         blurhash: String
     }],
+
+    logo: {
+        url: String,
+        blurhash: String
+    },
     legal: {
         licenseNumber: String,
         taxInfo: String,

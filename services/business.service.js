@@ -57,6 +57,8 @@ export const updateStep = async (businessId, step, data, toDelete = []) => {
             business.name = data.name || business.name
             business.address = data.address || business.address
             business.type = data.type || business.type
+            business.rating = data.rating || business.rating
+            business.logo = data.logo || business.logo
             break
 
         case 'contacts':

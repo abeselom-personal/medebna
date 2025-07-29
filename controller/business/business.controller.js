@@ -60,7 +60,13 @@ export const updateStep = async (req, res, next) => {
 
         const toDelete = [].concat(req.body.toDelete || req.body.ToDelete || []);
         const images = req.files?.images || [];
+        const logo = req.files?.logo
         const docs = req.files?.additionalDocs || [];
+
+        if (step === 'basic' && logo.length) {
+            processed = await processImages(logo, process.env.BASE_URL);
+            data.logo = processed[0];
+        }
 
         if (step === 'images' && images.length) {
             processed = await processImages(images, process.env.BASE_URL);

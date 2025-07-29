@@ -169,6 +169,7 @@ router.post(
     '/:id/:step',
     upload.fields([
         { name: 'images', maxCount: 10 },
+        { name: 'logo', maxCount: 1 },
         { name: 'additionalDocs', maxCount: 10 }
     ]),
     businessController.updateStep

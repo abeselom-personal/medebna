@@ -3,6 +3,8 @@ export const businessResponseDTO = (business) => ({
     id: business._id,
     name: business.name,
     address: business.address,
+    logo: business.logo,
+    rating: business.rating,
     type: business.type,
     contact: business.contact,
     amenities: business.amenities,
