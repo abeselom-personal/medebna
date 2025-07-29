@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs'
 import * as userService from './user.service.js'
 import { generateTokens, verifyRefreshToken } from '../utils/token.util.js'
 
-export const register = async ({ email, password, firstName, lastName, phone, role = 'customer' }) => {
+export const register = async ({ email, password, firstName, lastName, phone, role = 'ROLE_CUSTOMER' }) => {
     const hashed = await bcrypt.hash(password, 10)
     const user = await userService.createUser({ email, password: hashed, firstName, lastName, phone, role })
 

@@ -368,7 +368,7 @@ const router = express.Router()
 router.post(
     '/',
     verifyJWT,
-    checkRole(['vendor', 'admin']),
+    checkRole(['ROLE_CUSTOMER', 'ROLE_HOTEL_VENDOR', 'ROLE_ADMIN']),
     upload.fields([
         { name: 'images', maxCount: 10 },
         { name: 'performers[]', maxCount: 20 }, // For performer images
@@ -434,7 +434,7 @@ router.post(
 router.get(
     '/',
     verifyJWT,
-    checkRole(['customer', 'vendor', 'admin']),
+    checkRole(['ROLE_CUSTOMER', 'ROLE_HOTEL_VENDOR', 'ROLE_ADMIN']),
     eventController.listEvents
 )
 
@@ -466,7 +466,7 @@ router.get(
 router.get(
     '/:id',
     verifyJWT,
-    checkRole(['customer', 'vendor', 'admin']),
+    checkRole(['ROLE_CUSTOMER', 'ROLE_HOTEL_VENDOR', 'ROLE_ADMIN']),
     eventController.getEvent
 )
 
@@ -564,7 +564,7 @@ router.get(
 router.put(
     '/:id',
     verifyJWT,
-    checkRole(['vendor', 'admin']),
+    checkRole(['ROLE_CUSTOMER', 'ROLE_HOTEL_VENDOR', 'ROLE_ADMIN']),
     upload.array('images', 10),
     eventController.updateEvent
 )
@@ -603,7 +603,7 @@ router.put(
 router.delete(
     '/:id',
     verifyJWT,
-    checkRole(['vendor', 'admin']),
+    checkRole(['ROLE_CUSTOMER', 'ROLE_HOTEL_VENDOR', 'ROLE_ADMIN']),
     eventController.deleteEvent
 )
 

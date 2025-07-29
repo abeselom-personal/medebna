@@ -36,7 +36,7 @@ const router = express.Router()
  *                 type: string
  *               role:
  *                 type: string
- *                 enum: [customer, vendor]
+ *                 enum: [ROLE_CUSTOMER, ROLE_HOTEL_VENDOR]
  *                 description: Optional. Defaults to 'customer'. Admin is not allowed.
  *     responses:
  *       200:

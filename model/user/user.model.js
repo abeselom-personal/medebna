@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose"
-import swaggerJSDoc from "swagger-jsdoc"
 
 const UserSchema = new Schema({
     firstName: { type: String, required: true, trim: true },
@@ -12,8 +11,8 @@ const UserSchema = new Schema({
     phone: { type: String, required: true, trim: true, unique: true },
     role: {
         type: String,
-        enum: ["customer", "vendor", "admin"],
-        default: "customer"
+        enum: ["ROLE_CUSTOMER", "ROLE_TICKET_SELLER", "ROLE_HOTEL_VENDOR", "ROLE_ADMIN", "ROLE_SUPPORT"],
+        default: "ROLE_CUSTOMER"
     },
     sessionId: String,
     productType: String,
