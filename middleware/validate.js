@@ -55,9 +55,6 @@ export const validateSearchQuery = [
 ]
 
 export const validateInit = [
-    body('businessId').isMongoId().withMessage('businessId must be a valid ID'),
-    body('amount').isNumeric().withMessage('amount must be numeric'),
-    body('currency').isIn(['ETB', 'USD']).withMessage('currency must be ETB or USD'),
     body('email').isEmail().withMessage('email must be valid'),
     body('first_name').notEmpty().withMessage('first_name is required'),
     body('last_name').notEmpty().withMessage('last_name is required'),

@@ -28,7 +28,7 @@ export const roomUpdateDto = (body) => {
     const allowed = {};
     [
         'title', 'description', 'images', 'price', 'location',
-        'availability', 'maxCapacity', 'currentCapacity',
+        'availability', 'businessId', 'maxCapacity', 'currentCapacity',
         'numberOfAdults', 'numberOfChildren', 'floorLevel', 'discounts'
     ].forEach(f => {
         if (body[f] !== undefined) allowed[f] = body[f];

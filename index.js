@@ -1,4 +1,8 @@
 import 'module-alias/register.js'
+import { EventEmitter } from 'events'
+
+EventEmitter.defaultMaxListeners = 30
+
 import dotenv from 'dotenv'
 import express from 'express'
 import morgan from 'morgan'
@@ -15,6 +19,9 @@ import logger from './utils/logger.js'
 import seedAdminUser from './scripts/seedAdmin.js'
 import routes from './routes/index.js'
 import { errorHandler } from './middleware/error.js'
+import webhookRouter from './routes/webhook.route.js';
+
+import './cron/index.js'
 
 dotenv.config()
 
@@ -36,6 +43,7 @@ app.get('/', (_, res) => res.send('OK'))
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 app.use('/api', routes)
+app.use('/webhooks', webhookRouter)
 
 app.use(errorHandler)
 
