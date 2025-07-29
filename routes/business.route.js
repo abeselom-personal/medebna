@@ -11,6 +11,33 @@ const router = express.Router()
  *   name: Business
  *   description: Business onboarding and management
  */
+
+/**
+ * @swagger
+ * /api/business/{id}/rooms:
+ *   get:
+ *     summary: Get rooms for a business
+ *     tags: [Business]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of rooms
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Room'
+ */
+
+router.get('/:id/rooms', businessController.getRooms)
 router.use(verifyJWT)
 
 /**
@@ -200,32 +227,6 @@ router.post(
  */
 
 router.get('/:id/steps', businessController.getStepsStatus)
-/**
- * @swagger
- * /api/business/{id}/rooms:
- *   get:
- *     summary: Get rooms for a business
- *     tags: [Business]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: List of rooms
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Room'
- */
-
-router.get('/:id/rooms', businessController.getRooms)
 /**
  * @swagger
  * /api/business/{id}/events:
