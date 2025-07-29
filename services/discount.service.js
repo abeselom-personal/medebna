@@ -98,7 +98,6 @@ export const calculatePricingEstimate = async ({
             adults,
             children,
             totalGuests: adults + children
-            // Add any other relevant context fields
         }
     );
 
@@ -136,13 +135,13 @@ export const calculatePricingEstimate = async ({
 
 // Existing discount calculation function (enhanced)
 export const calculateApplicableDiscounts = async (itemId, kind, context) => {
-    const now = new Date();
+    // const now = new Date();
     const discounts = await DiscountRule.find({
         target: itemId,
         targetType: kind,
         enabled: true,
-        validFrom: { $lte: now },
-        validTo: { $gte: now }
+        // validFrom: { $lte: now },
+        // validTo: { $gte: now }
     }).sort({ discountPercent: -1 }); // Sort by highest discount first
 
     if (!discounts.length) return [];
