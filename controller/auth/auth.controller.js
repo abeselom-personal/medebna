@@ -2,7 +2,7 @@ import * as authService from '../../services/auth.service.js'
 
 export const register = async (req, res, next) => {
     try {
-        if (req.body.role && !["customer", "vendor"].includes(req.body.role)) {
+        if (req.body.role && !["ROLE_CUSTOMER", "ROLE_TICKET_SELLER", "ROLE_HOTEL_VENDOR"].includes(req.body.role)) {
             return res.status(400).json({ message: "Role must be either 'customer' or 'vendor'" })
         }
 
