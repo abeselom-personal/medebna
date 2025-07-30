@@ -99,6 +99,7 @@ export const initPayment = async ({
             { headers: { Authorization: `Bearer ${config.chapa.secretKey}` } }
         );
     } catch (error) {
+        console.log(error)
         throw new Error(`Payment initialization failed: ${error.response?.data?.message || error.message}`);
     }
 

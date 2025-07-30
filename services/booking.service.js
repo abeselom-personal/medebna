@@ -76,7 +76,8 @@ export const createBookingService = async ({
 
     // Validate dates
     const now = new Date();
-    if (new Date(checkIn) < now || new Date(checkOut) <= new Date(checkIn)) {
+
+    if (new Date(checkIn) < now.setHours(0, 0, 0, 0) || new Date(checkOut) < new Date(checkIn)) {
         throw new Error('Invalid booking dates');
     }
 

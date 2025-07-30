@@ -9,10 +9,6 @@ const roomSchema = new mongoose.Schema({
     }],
     numberOfAdults: { type: Number, required: true, min: 1 },
     numberOfChildren: { type: Number, required: true, min: 0 },
-    floorLevel: {
-        type: [Number], // e.g. [1] or [1,2] for rooms spanning multiple floors
-        validate: v => Array.isArray(v) && v.length > 0
-    },
     price: {
         type: [{
             currency: { type: String, required: true },
