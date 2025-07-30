@@ -87,7 +87,7 @@ export const initPayment = async ({
 
     // Add subaccount if configured
     if (business.paymentSettings?.subAccount?.id) {
-        payload.subaccounts = [{ id: business.paymentSettings.subAccount.id }];
+        payload.subaccounts = { id: business.paymentSettings.subAccount.id };
     }
 
     // Initialize payment with Chapa
