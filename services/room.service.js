@@ -141,15 +141,20 @@ export const updateRoom = async (id, updates) => {
     return room
 }
 
-export const updateRoomAvailability = async (id, delta) => {
+export const updateRoomAvailability = async (id, type, value) => {
     const room = await Room.findById(id);
     if (!room) throw new Error('Room not found');
 
-    const increment = Number(delta);
-    if (isNaN(increment)) throw new Error('Invalid increment value');
+    let newCapacity;
 
-    const newCapacity = room.currentCapacity + increment;
-    if (newCapacity < 0 || newCapacity > room.maxCapacity) return room;
+    if (type === 'set') {
+        newCapacity = value;
+    } else {
+        const delta = type === 'decriment' ? -Math.abs(value) : Math.abs(value);
+        newCapacity = room.currentCapacity + delta;
+    }
+
+    if (newCapacity < 0 || newCapacity > room.maxCapacity) throw new Error('Capacity out of bounds');
 
     room.currentCapacity = newCapacity;
     await room.save();

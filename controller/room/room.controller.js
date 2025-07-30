@@ -70,9 +70,11 @@ export const updateRoom = async (req, res, next) => {
 
 export const updateRoomAvailability = async (req, res, next) => {
     try {
-        const { type } = req.query;
-        const delta = type === 'decriment' ? -1 : 1;
-        const room = await roomService.updateRoomAvailability(req.params.id, delta);
+        const { type, value } = req.query;
+        const input = Number(value);
+        if (isNaN(input)) throw new Error('Invalid value');
+
+        const room = await roomService.updateRoomAvailability(req.params.id, type, input);
         res.json(roomResponseDto(room));
     } catch (err) {
         next(err);
