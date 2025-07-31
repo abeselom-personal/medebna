@@ -4,6 +4,7 @@ import Events from '../model/event/event.model.js'
 import Rooms from '../model/room/room.model.js'
 import * as paymentService from './payment.service.js'
 import { calculateProgress } from '../utils/progress.util.js'
+import mongoose from 'mongoose'
 
 export const createBusiness = async (ownerId, type) => {
     if (!type) throw new Error('Business type is required')
@@ -146,8 +147,20 @@ export const getEvents = async (businessId) => {
 }
 
 export const getRooms = async (businessId) => {
-    const rooms = await Rooms.find({ businessId: businessId })
-    if (!rooms) throw new Error('Business not found')
+    const rooms = await Rooms.aggregate([
+        { $match: { businessId: new mongoose.Types.ObjectId(businessId) } },
+        {
+            $lookup: {
+                from: 'businesses',
+                localField: 'businessId',
+                foreignField: '_id',
+                as: 'business'
+            }
+        },
+        { $unwind: { path: '$business', preserveNullAndEmptyArrays: true } }
+    ]);
 
-    return rooms
+    if (!rooms.length) throw new Error('Business not found');
+
+    return rooms;
 }
