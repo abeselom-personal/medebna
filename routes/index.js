@@ -11,7 +11,7 @@ import bookingRouter from '../routes/booking.route.js'
 import dashbordRouter from '../routes/dashboard.route.js'
 import bankRouter from '../routes/bank.route.js'
 import discountRouter from '../routes/discount.route.js'
-
+import cartRouter from '../routes/cart.route.js'
 const router = express.Router()
 
 
@@ -79,6 +79,14 @@ router.use('/favorites', favoriteRouter)
  */
 router.use('/bookings', bookingRouter)
 
+
+/**
+ * @swagger
+ * tags:
+ *   - name: Booking
+ *     description: Booking creation, history, and cancellation
+ */
+router.use('/cart', cartRouter)
 /**
  * @swagger
  * tags:

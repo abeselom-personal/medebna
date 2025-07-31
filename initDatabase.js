@@ -9,7 +9,10 @@ async function initDatabase() {
             maxIdleTimeMS: 10000,
             waitQueueTimeoutMS: 10000
         });
+
         logger.info('MongoDB connected')
+
+        import('./cron/index.js')
     } catch (err) {
         console.log(err)
         logger.error('MongoDB connection failed:', err.message)

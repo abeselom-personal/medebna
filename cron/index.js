@@ -18,3 +18,4 @@ cron.schedule(CRON_SCHEDULE, async () => {
         await booking.deleteOne()
     }
 })
+

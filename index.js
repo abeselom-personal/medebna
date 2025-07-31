@@ -21,7 +21,6 @@ import routes from './routes/index.js'
 import { errorHandler } from './middleware/error.js'
 import webhookRouter from './routes/webhook.route.js';
 
-import './cron/index.js'
 
 dotenv.config()
 
