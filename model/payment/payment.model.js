@@ -19,7 +19,7 @@ const paymentSchema = new mongoose.Schema({
     bookings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Booking' }],
     paidFor: {
         item: { type: mongoose.Schema.Types.ObjectId, required: true, refPath: 'paidFor.kind' },
-        kind: { type: String, required: true, enum: ['Room', 'Event'] }
+        kind: { type: String, required: true, enum: ['Room', 'Event', 'Cart'] }
     },
     rawInitialization: { type: Object },
     rawVerification: { type: Object },

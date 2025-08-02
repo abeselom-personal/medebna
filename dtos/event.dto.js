@@ -51,6 +51,28 @@ export const eventCreateDto = (data, userId) => {
                 icon: Joi.string().allow('')
             })
         ).default([]),
+
+        tickets: Joi.array().items(
+            Joi.object({
+                title: Joi.string().required(),
+                totalCapacity: Joi.number().min(0).required(), // ✅ add this
+                types: Joi.array().items(
+                    Joi.object({
+                        name: Joi.string().required(),
+                        price: Joi.number().required(),
+                        benefits: Joi.string().allow(''),
+                        amenities: Joi.array().items(Joi.string()).default([])
+                    })
+                ).required()
+            })
+        ).default([]),
+
+        images: Joi.array().items( // ✅ add this
+            Joi.object({
+                url: Joi.string().uri().required(),
+                blurhash: Joi.string().allow('')
+            })
+        ).default([]),
     })
 
     const validated = schema.validate(data, { abortEarly: false })
@@ -129,6 +151,7 @@ export const eventResponseDto = (event) => {
         endTime: event.endTime,
         images: event.images || [],
         businessId: event.businessId,
+        business: event.business,
         createdBy: event.createdBy,
         tickets: event.tickets || [],
         performers: event.performers || [],

@@ -1,49 +1,19 @@
 import mongoose from 'mongoose';
 
 const eventSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        default: ''
-    },
+    name: { type: String, required: true },
+    description: { type: String, default: '' },
     images: [{
-        url: {
-            type: String,
-            required: true
-        },
-        blurhash: {
-            type: String,
-            default: ''
-        }
+        url: { type: String, required: true },
+        blurhash: { type: String, default: '' }
     }],
-    location: {
-        type: String,
-        required: true
-    },
-    date: {
-        type: Date,
-        required: true
-    },
-    startTime: {
-        type: Date,
-        required: true
-    },
-    endTime: {
-        type: Date,
-        required: true
-    },
+    location: { type: String, required: true },
+    date: { type: Date, required: true },
+    startTime: { type: Date, required: true },
+    endTime: { type: Date, required: true },
     tickets: [{
-        title: {
-            type: String,
-            required: true
-        },
-        totalCapacity: {
-            type: Number,
-            default: 0
-        },
+        title: { type: String, required: true },
+        totalCapacity: { type: Number, default: 0 },
         available: {
             type: Number,
             default: function() {
@@ -51,60 +21,25 @@ const eventSchema = new mongoose.Schema({
             }
         },
         types: [{
-            name: {
-                type: String,
-                required: true
-            },
-            price: {
-                type: Number,
-                required: true
-            },
-            benefits: {
-                type: String,
-                default: ''
-            },
-            amenities: [{
-                type: String
-            }]
+            name: { type: String, required: true },
+            price: { type: Number, required: true },
+            benefits: { type: String, default: '' },
+            amenities: [{ type: String }]
         }]
     }],
     performers: [{
-        name: {
-            type: String,
-            required: true
-        },
-        role: {
-            type: String,
-            default: ''
-        },
-        image: {
-            type: String,
-            default: ''
-        }
+        name: { type: String, required: true },
+        role: { type: String, default: '' },
+        image: { type: String, default: '' }
     }],
     sponsors: [{
-        name: {
-            type: String,
-            required: true
-        },
-        logo: {
-            type: String,
-            default: ''
-        },
-        website: {
-            type: String,
-            default: ''
-        }
+        name: { type: String, required: true },
+        logo: { type: String, default: '' },
+        website: { type: String, default: '' }
     }],
     amenities: [{
-        name: {
-            type: String,
-            required: true
-        },
-        icon: {
-            type: String,
-            default: ''
-        }
+        name: { type: String, required: true },
+        icon: { type: String, default: '' }
     }],
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
@@ -127,6 +62,22 @@ const eventSchema = new mongoose.Schema({
             return ret;
         }
     }
+});
+
+eventSchema.pre('save', async function(next) {
+    const Business = mongoose.model('Business');
+    const exists = await Business.exists({ _id: this.businessId });
+    if (!exists) return next(new Error('Invalid businessId'));
+
+    if (this.startTime >= this.endTime) {
+        return next(new Error('startTime must be before endTime'));
+    }
+
+    if (this.date > this.startTime) {
+        return next(new Error('date must be the same day or before startTime'));
+    }
+
+    next();
 });
 
 export default mongoose.model('Event', eventSchema);

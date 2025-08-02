@@ -3,7 +3,7 @@ import * as authService from '../../services/auth.service.js'
 export const register = async (req, res, next) => {
     try {
         if (req.body.role && !["ROLE_CUSTOMER", "ROLE_TICKET_SELLER", "ROLE_HOTEL_VENDOR"].includes(req.body.role)) {
-            return res.status(400).json({ message: "Role must be either 'customer' or 'vendor'" })
+            return res.status(400).json({ message: "Role must be either 'ROLE_CUSTOMER','ROLE_TICKET_SELLER' or 'ROLE_HOTEL_VENDOR'" })
         }
 
         const { accessToken, refreshToken, user } = await authService.register(req.body)

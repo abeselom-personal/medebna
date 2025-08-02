@@ -6,6 +6,7 @@ import config from '../config/config.js';
 import Payment from '../model/payment/payment.model.js';
 import Booking from '../model/booking/booking.model.js';
 import Business from '../model/business/business.model.js';
+import { completeCheckout } from './checkout.service.js';
 
 export const initPayment = async ({
     email,
@@ -72,11 +73,11 @@ export const initPayment = async ({
         last_name,
         phone_number,
         tx_ref,
-        return_url: `${config.returnUrl}/${bookingIds[0]}`,
-        callback_url: `${config.callbackUrl}/${tx_ref}`,
+        return_url: `${config.returnUrl}${bookingIds[0]}`,
+        callback_url: `${config.callbackUrl}${tx_ref}`,
         meta: {
             bookingIds,
-            paymentType: metadata.paymentType || 'room_booking',
+            paymentType: metadata.paymentType || 'Room',
             businessId: business._id
         },
         customization: {
@@ -116,7 +117,7 @@ export const initPayment = async ({
         bookings: bookingIds, // Store array of booking IDs
         paidFor: {
             item: firstBooking.item,
-            kind: bookingKind
+            kind: metadata.paymentType || 'Room',
         },
         rawInitialization: chapaResponse.data
     });
@@ -124,7 +125,7 @@ export const initPayment = async ({
     // Update bookings with payment reference
     await Booking.updateMany(
         { _id: { $in: bookingIds } },
-        { $set: { paymentTxRef: tx_ref, status: 'payment_pending' } }
+        { $set: { paymentTxRef: tx_ref, status: 'Processing' } }
     );
 
     return {
@@ -170,7 +171,9 @@ export const verifyPayment = async (tx_ref) => {
             { $set: { status: 'confirmed', payment: payment._id } }
         );
     }
-
+    if (payment?.paidFor?.kind == "Cart") {
+        completeCheckout(payment?.paidFor?.item, tx_ref)
+    }
     return {
         success: true,
         paymentId: payment._id,
@@ -179,18 +182,10 @@ export const verifyPayment = async (tx_ref) => {
     };
 };
 
-// Helper to get payment status
 export const getPaymentStatus = async (tx_ref) => {
     return Payment.findOne({ tx_ref }).lean();
 };
 
-const safeParseJSON = (str) => {
-    try {
-        return JSON.parse(str)
-    } catch {
-        return {}
-    }
-}
 
 export const createSubaccount = async ({
     business_name,

@@ -79,6 +79,7 @@ const router = Router()
  */
 
 router.post('/init', validateInit, paymentController.init)
+
 /**
  * @swagger
  * /payment/verify/{tx_ref}:
@@ -117,6 +118,5 @@ router.post('/init', validateInit, paymentController.init)
  *       404:
  *         $ref: '#/components/schemas/ErrorResponse'
  */
-
 router.get('/verify/:tx_ref', paymentController.verify)
 export default router

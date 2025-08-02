@@ -1,6 +1,7 @@
 import Cart from '../model/cart/cart.model.js';
 import * as bookingService from './booking.service.js';
-import * as paymentService from './payment.service.js';
+import { verifyPayment } from './payment.service.js'
+import Booking from '../model/booking/booking.model.js'
 
 // Validate cart and create bookings
 export const validateCartAndCreateBookings = async (cartId, user) => {
@@ -38,5 +39,15 @@ export const validateCartAndCreateBookings = async (cartId, user) => {
 
 // Complete checkout after payment
 export const completeCheckout = async (cartId, tx_ref) => {
-    // Verify payment
+    const bookings = await Booking.find({ paymentTxRef: tx_ref })
+        .populate({
+            path: 'item',
+            match: { kind: 'Event' },
+            populate: {
+                path: 'businessId',
+                model: 'Business'
+            }
+        })
+    await Cart.findByIdAndDelete(cartId)
+    console.log(cartId)
 };

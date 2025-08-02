@@ -1,27 +1,66 @@
+import mongoose from 'mongoose'
 import Event from '../model/event/event.model.js'
 
 export const createEvent = async (payload) => {
     return await Event.create(payload)
 }
 
-
 export const getEventById = async (id) => {
-    return await Event.findById(id)
-        .populate('businessId createdBy')
+    const [event] = await Event.aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(id) } },
+        {
+            $lookup: {
+                from: 'businesses',
+                localField: 'businessId',
+                foreignField: '_id',
+                as: 'business'
+            }
+        },
+        { $unwind: { path: "$business", preserveNullAndEmptyArrays: true } },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'createdBy',
+                foreignField: '_id',
+                as: 'createdBy'
+            }
+        },
+        { $unwind: { path: "$createdBy", preserveNullAndEmptyArrays: true } },
+    ])
+    return event
 }
 
 export const listEvents = async (filters = {}, { page = 1, limit = 10 } = {}) => {
-    const query = {}
-    if (filters.location) query.location = { $regex: filters.location, $options: 'i' }
-    if (filters.date) query.date = { $gte: new Date(filters.date) }
+    const match = {}
+    if (filters.location) match.location = { $regex: filters.location, $options: 'i' }
+    if (filters.date) match.date = { $gte: new Date(filters.date) }
 
-    const events = await Event.find(query)
-        .skip((page - 1) * limit)
-        .limit(limit)
-        .sort({ date: -1 })
-        .populate('businessId createdBy')
+    const events = await Event.aggregate([
+        { $match: match },
+        { $sort: { date: -1 } },
+        { $skip: (page - 1) * limit },
+        { $limit: limit },
+        {
+            $lookup: {
+                from: 'businesses',
+                localField: 'businessId',
+                foreignField: '_id',
+                as: 'business'
+            }
+        },
+        { $unwind: { path: "$business", preserveNullAndEmptyArrays: true } },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'createdBy',
+                foreignField: '_id',
+                as: 'createdBy'
+            }
+        },
+        { $unwind: { path: "$createdBy", preserveNullAndEmptyArrays: true } },
+    ])
 
-    const total = await Event.countDocuments(query)
+    const total = await Event.countDocuments(match)
 
     return {
         data: events,
@@ -41,7 +80,6 @@ export const deleteEvent = async (id) => {
     return await Event.findByIdAndDelete(id)
 }
 
-// Ticket-related functions
 export const createTicketsForEvent = async (eventId, tickets) => {
     return await Event.findByIdAndUpdate(
         eventId,
@@ -74,7 +112,6 @@ export const deleteTicketType = async (eventId, ticketId) => {
     )
 }
 
-// Image-related functions
 export const removeImages = async (eventId, imageUrls) => {
     return await Event.findByIdAndUpdate(
         eventId,
@@ -83,7 +120,6 @@ export const removeImages = async (eventId, imageUrls) => {
     )
 }
 
-// Additional utility functions
 export const getEventTickets = async (eventId) => {
     const event = await Event.findById(eventId).select('tickets')
     return event?.tickets || []

@@ -10,7 +10,6 @@ export const initCheckout = async (req, res) => {
         const userId = req.user.id;
 
         const user = await userService.findUserById(userId);
-        console.log(user)
         // Validate cart and create bookings
         const { cart, bookings } = await checkoutService.validateCartAndCreateBookings(cartId, user);
         const flatBookings = bookings.flat();
@@ -22,7 +21,7 @@ export const initCheckout = async (req, res) => {
             phone_number: user.phone || '',
             metadata: {
                 bookingId: flatBookings.map(b => b._id),
-                paymentType: 'cart_checkout'
+                paymentType: 'Cart'
             }
         };
 
